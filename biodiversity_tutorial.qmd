@@ -1,0 +1,43 @@
+---
+title: "TD Biodiversité"
+author: "Arthur Oulès"
+format: html
+editor: visual
+---
+
+```{r}
+#| echo: false
+library(here)
+library(tidyverse)
+library(rentrez)
+
+library(ape)
+library(phangorn)
+library(apex)
+```
+
+```{r}
+Genbank_ACnumber <- as_tibble(read.csv2(file = here("data", "Genbank.csv")))
+
+Sequences <- Genbank_ACnumber |> mutate(
+  across(-Species, \(x) Vectorize(Get_sequence)(x))
+  )
+```
+
+```{r}
+Get_sequence <- function(AC_number) {
+  if (is.na(AC_number) == TRUE) {NA} else {
+      entrez_fetch(
+        db = "nuccore",
+        id = AC_number,
+        rettype = "fasta_cds_na",
+        retmode = "text"
+      ) |>
+        strsplit("]") |>
+        unlist() |>
+        tail(1) |>
+        gsub(pattern = "\n", replacement = "",  x = _)
+  }
+}
+```
+
