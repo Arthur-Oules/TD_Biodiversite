@@ -2,29 +2,44 @@
 title: "TD Biodiversité"
 author: "Arthur Oulès"
 format: html
-editor: visual
+editor: source
 ---
-
+# Load libraries and data
+## Load libraries
 ```{r}
+#| label: "Load packages"
 #| echo: false
+#| warning: false
+
+# For data manipulation
 library(here)
 library(tidyverse)
 library(rentrez)
 
+# For Phylogenetics
 library(ape)
 library(phangorn)
 library(apex)
 ```
 
+## Load external custom functions
 ```{r}
-source(here("functions", ""))
+#| label: "Load external functions"
+source(here("functions", "tidy_functions.R"))
 ```
 
-
+## Load external data
 ```{r}
+#| label: "Load data"
 Genbank_ACnumber <- as_tibble(read.csv2(file = here("data", "Genbank.csv")))
+```
 
-Sequences <- Genbank_ACnumber |> mutate(
-  across(-Species, \(x) Vectorize(Get_sequence)(x))
-  )
+# Analysis
+```{r}
+Sequences <- Genbank_ACnumber |> 
+  mutate(across(-Species, \(x) Vectorize(Get_sequence)(x)))
+saveRDS(Sequences, file = here("output", "sequences_tibble.RDS"))
+
+Sequences |> write_to_fasta()
+
 ```
