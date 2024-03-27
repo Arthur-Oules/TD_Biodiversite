@@ -23,7 +23,7 @@ library(rentrez)
 
 # For Phylogenetics
 library(ape)
-library(adegenet)
+# library(adegenet)
 library(msa)
 library(phangorn)
 
