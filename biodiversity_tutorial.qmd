@@ -82,7 +82,7 @@ Ici, on va utiliser l'algorithme MUSCLE pour générer notre alignement.
 alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
 print(alignment, show = "complete")
 ```
-Comment évolue les virus de la grippe ? Pourquioi évoluent-ils particulièrement rapidement ?
+Comment évoluent les virus de la grippe ? Pourquoi évoluent-ils particulièrement rapidement ?
 
 # Méthode de distances
 Rappeler le principe des méthodes de distance, en citer deux exemples.
