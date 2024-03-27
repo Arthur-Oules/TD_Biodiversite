@@ -2,44 +2,357 @@
 title: "TD Biodiversité"
 author: "Arthur Oulès"
 format: html
-editor: source
+editor: visual
 ---
+
 # Load libraries and data
+
 ## Load libraries
+
 ```{r}
 #| label: "Load packages"
 #| echo: false
+#| output: false
 #| warning: false
 
 # For data manipulation
 library(here)
 library(tidyverse)
+library(reshape2)
 library(rentrez)
 
 # For Phylogenetics
 library(ape)
+library(adegenet)
+library(msa)
 library(phangorn)
-library(apex)
+
+# For visualization
+library(ggtree)
+library(viridis)
+library(ggnewscale)
 ```
 
 ## Load external custom functions
+
 ```{r}
 #| label: "Load external functions"
 source(here("functions", "tidy_functions.R"))
 ```
 
 ## Load external data
+
 ```{r}
 #| label: "Load data"
-Genbank_ACnumber <- as_tibble(read.csv2(file = here("data", "Genbank.csv")))
+annotations <- read_csv(
+  file           = here("data", "usflu.annot.csv"),
+  show_col_types = FALSE
+) |> select(c(-1))
+view(annotations)
 ```
+# Acquisition des séquences
 
-# Analysis
 ```{r}
-Sequences <- Genbank_ACnumber |> 
-  mutate(across(-Species, \(x) Vectorize(Get_sequence)(x)))
-saveRDS(Sequences, file = here("output", "sequences_tibble.RDS"))
-
-Sequences |> write_to_fasta()
-
+tibble(
+  "accession" = annotations$accession,
+  "sequences" = Vectorize(Get_sequence)(annotations$accession)
+) |> write_to_fasta(filename = "usflu_sequences")
+gc()
 ```
+# Alignement des séquences
+
+```{r}
+usflu_sequences <- readDNAStringSet(file = here("output", "usflu_sequences.fasta"))
+usflu_sequences
+```
+
+```{r}
+alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
+print(alignment, show = "complete")
+```
+
+# Méthode de distances
+
+## Génération de la matrice de distances
+
+```{r}
+alignment_BIN <- alignment |> msaConvert(type = "ape::DNAbin") 
+distance_matrix <- alignment_BIN |>
+  dist.dna(model = "TN93")
+
+# distance_matrix |> as.data.frame() |>
+#   table.paint(clegend = 0, clabel.row = .5, clabel.col = .5)
+
+distance_matrix |>
+  as.matrix() |> melt() |>
+  ggplot(mapping = aes(x = Var1, y = Var2, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis() +
+  ggtitle("Heatmap de la matrice des distances") +
+  theme(
+    axis.title = element_blank()
+    )
+```
+## Génération de l'arbre par UPGMA
+
+```{r}
+hclust(distance_matrix, method = "average", members = NULL) |> plot(cex = 0.6)
+```
+
+## Génération de l'arbre par Neighbour-Joining
+
+```{r}
+NJ_tree <- distance_matrix |> nj()
+class(NJ_tree)
+```
+
+```{r}
+ggtree(NJ_tree) + geom_tiplab() + geom_nodelab()
+```
+
+```{r}
+ggtree(NJ_tree, layout = "circular") %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  ggtitle("NJ non raciné") +
+  theme(legend.position = "right")
+```
+
+```{r}
+plot(NJ_tree, cex = .6)
+nodelabels(frame = "none", cex = .6)
+```
+
+
+```{r}
+NJ_tree_rooted <- NJ_tree |> root(outgroup = "CY012128") |> ladderize()
+ggtree(NJ_tree_rooted) %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  ggtitle("NJ raciné") +
+  theme(legend.position = "right") +
+  geom_rootedge(rootedge = .01) +
+  theme_tree2()
+```
+
+## Quelle méthode choisir ?
+
+```{r}
+data_NJ <- data.frame(
+    x = as.vector(distance_matrix),
+    y = NJ_tree_rooted |> cophenetic() |> as.dist() |> as.vector()
+  )
+ggplot(
+  data    = data_NJ,
+  mapping = aes(x = x, y = y)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  ggtitle("Est-ce que le NJ est approprié ?") +
+  xlab("Distances par paires d'origine") +
+  ylab("Distances par paires de l'arbre") +
+  theme_bw()
+cor(data_NJ$x, data_NJ$y)^2
+```
+
+```{r}
+UPGMA_tree <- hclust(distance_matrix, method = "average") |> as.phylo()
+
+data_UPGMA <- data.frame(
+    x = as.vector(distance_matrix),
+    y = UPGMA_tree |> cophenetic() |> as.dist() |> as.vector()
+)
+ggplot(
+  data = data_UPGMA,
+  mapping = aes(x = x, y = y)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  ggtitle("Est-ce que l'UPGMA est appropriée ?") +
+  xlab("Distances par paires d'origine") +
+  ylab("Distances par paires de l'arbre") +
+  theme_bw()
+cor(data_UPGMA$x, data_UPGMA$y)^2
+```
+
+
+
+## Bootstrap
+
+### Calcul des valeurs de bootstrap
+```{r}
+bootstrap_rooted_NJ <- boot.phylo(
+  NJ_tree_rooted,
+  alignment_BIN,
+  \(x) {x |>
+      dist.dna(model = "TN93") |>
+      nj() |> 
+      root(outgroup = "CY012128")
+  }
+)
+NJ_tree_rooted$node.label <- bootstrap_rooted_NJ
+```
+
+### Impression de l'arbre bootstrappé
+
+```{r}
+ggtree(NJ_tree_rooted) %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  # new_scale_colour() +
+  geom_label2(
+    aes(
+      subset = !isTip,
+      label = label,
+    )
+  ) +
+  ggtitle("NJ raciné avec Bootstrap") +
+  theme(legend.position = "right") +
+  geom_rootedge(rootedge = .01) +
+  theme_tree2()
+```
+### On retire les noeuds faibles
+
+```{r}
+NJ_tree_rooted_collapsed <- NJ_tree_rooted
+toCollapse <- match(
+  which(bootstrap_rooted_NJ < 70) + length(NJ_tree_rooted$tip.label),
+ NJ_tree_rooted$edge[, 2]
+)
+NJ_tree_rooted_collapsed$edge.length[toCollapse] <- 0
+NJ_tree_rooted_collapsed <- di2multi(NJ_tree_rooted_collapsed, tol = 0.00001)
+```
+
+```{r}
+ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  # new_scale_colour() +
+  geom_label2(
+    aes(
+      subset = !isTip,
+      label = label,
+    )
+  ) +
+  ggtitle("NJ raciné avec Bootstrap et sans les noeuds faibles") +
+  theme(legend.position = "right") +
+  geom_rootedge(rootedge = .01) +
+  theme_tree2()
+```
+# Maximum de parcimonie
+
+## Conversion de l'alignement dans le format phyDat
+
+```{r}
+alignment_phyDat <- alignment |> msaConvert(type = "phangorn::phyDat")
+class(alignment_phyDat)
+```
+## Génération de l'arbre initial
+
+```{r}
+MP_tree_init <- alignment_BIN |> dist.dna(model = "raw") |> nj()
+```
+
+### Calcul de la parcimonie de l'arbre initial
+
+```{r}
+parsimony(MP_tree_init, alignment_phyDat)
+```
+
+## Génération de l'arbre le plus parcimonieux
+```{r}
+MP_tree <- optim.parsimony(MP_tree_init, alignment_phyDat)
+rm(MP_tree_init)
+MP_tree
+```
+```{r}
+ggtree(MP_tree, layout = "circular") %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  ggtitle("Arbre maximum de parcimonie") +
+  theme(legend.position = "right")
+```
+
+# Maximum de vraisemblance
+
+## Initialisation
+
+```{r}
+ML_tree_init <- alignment_BIN |> dist.dna(model = "raw") |> nj()
+```
+
+### Calcul de la parcimonie de l'arbre initial
+
+```{r}
+pml(ML_tree_init, alignment_phyDat, k = 4)
+```
+```{r}
+table(as.character(alignment_phyDat))
+na.posi <- which(
+  apply(
+    as.character(alignment_BIN),
+    2,
+    \(x) any(!x %in% c("a","t","g","c"))
+  )
+)
+apply(
+  as.character(alignment_BIN),
+  2,
+  \(x) sum(!x %in% c("a","t","g","c"))
+) |>
+  plot(
+    type = "l",
+    col  = "blue",
+    xlab = "Position in HA segment",
+    ylab = "Number of NAs"
+  )
+```
+```{r}
+alignment_cropped <- alignment_BIN[, -na.posi]
+table(as.character(alignment_cropped))
+```
+```{r}
+alignment_cropped_phyDat <- as.phyDat(alignment_cropped)
+```
+
+```{r}
+ML_tree_init <- alignment_cropped |> dist.dna(model = "TN93") |> nj()
+ML_tree_init_L <- pml(ML_tree_init, alignment_cropped_phyDat, k = 4)
+ML_tree_init_L
+```
+## Génération de l'arbre le plus vraisemblable
+
+```{r}
+ML_tree <- optim.pml(
+  ML_tree_init_L,
+  optNni   = TRUE,
+  optBf    = TRUE,
+  optQ     = TRUE,
+  optGamma = TRUE
+)
+ML_tree
+```
+
+```{r}
+anova(ML_tree_init_L, ML_tree)
+AIC(ML_tree_init_L, ML_tree)
+```
+
+```{r}
+ML_tree_rooted <- ML_tree$tree |> root(outgroup = "CY012128") |> ladderize()
+ggtree(ML_tree_rooted) %<+% annotations +
+  geom_tiplab(aes(color = year)) +
+  scale_color_viridis(option = "turbo") +
+  # new_scale_colour() +
+  geom_label2(
+    aes(
+      subset = !isTip,
+      label = label,
+    )
+  ) +
+  ggtitle("Maximum de vraisemblance") +
+  theme(legend.position = "right") +
+  geom_rootedge(rootedge = .01) +
+  theme_tree2()
+```
+
