@@ -5,9 +5,9 @@ format: html
 editor: visual
 ---
 
-# Load libraries and data
+# Chargement des packages et données
 
-## Load libraries
+## Chargement des packages
 
 ```{r}
 #| label: "Load packages"
@@ -23,7 +23,6 @@ library(rentrez)
 
 # For Phylogenetics
 library(ape)
-# library(adegenet)
 library(msa)
 library(phangorn)
 
@@ -33,15 +32,24 @@ library(viridis)
 library(ggnewscale)
 ```
 
-## Load external custom functions
+## Chargement des fonctions externes
 
 ```{r}
 #| label: "Load external functions"
 source(here("functions", "tidy_functions.R"))
 ```
 
-## Load external data
+# Préliminaires
+Dans le cadre de ce TP/TD, nous allons apprendre à générer des arbres phylogénétiques à partir de séquences ADN récupérées sur GenBank par diverses méthodes de construction d'arbre et les comparer entre elles. Nous allons apprrendre à récupérer des séquences, les aligner, construire des arbres et visualiser les phylogénies.
+Tout le long du TP, nous allons manipuler un petit jeu de données sur la grippe saisonnière aux états unis entre 1993 et 2008.
 
+Quel est le protocole général pour construire un arbre phylogénétique à partir de séquences ?
+
+# Acquisition des séquences
+Nous allons commencer par récupérer les séquences d'intérets sur Genbank directement depuis R.
+
+## Chargement des données
+Chargez le fichier data/usflu.annot.csv.
 ```{r}
 #| label: "Load data"
 annotations <- read_csv(
@@ -50,8 +58,9 @@ annotations <- read_csv(
 ) |> select(c(-1))
 view(annotations)
 ```
-# Acquisition des séquences
 
+## Récupération des séquences par lot
+Récupérer les séquences depuis Genbank avec le package rentrez.
 ```{r}
 tibble(
   "accession" = annotations$accession,
@@ -59,22 +68,31 @@ tibble(
 ) |> write_to_fasta(filename = "usflu_sequences")
 gc()
 ```
-# Alignement des séquences
 
+# Alignement des séquences
+Le package msa permet d'utiliser les algorithmes classiques d'alignement de multiples séquences.
+Ouvrir la page d'aide de la fonction msa.
 ```{r}
 usflu_sequences <- readDNAStringSet(file = here("output", "usflu_sequences.fasta"))
 usflu_sequences
 ```
 
+Ici, on va utiliser l'algorithme MUSCLE pour générer notre alignement.
 ```{r}
 alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
 print(alignment, show = "complete")
 ```
+Comment évolue les virus de la grippe ? Pourquioi évoluent-ils particulièrement rapidement ?
 
 # Méthode de distances
+Rappeler le principe des méthodes de distance, en citer deux exemples.
+Quelles sont les différences entre ces méthodes ?
 
 ## Génération de la matrice de distances
-
+Nous allons générer une matrice des distances à partir de nos alignements.
+aller sur [ce lien](http://www.iqtree.org/doc/Substitution-Models) et [celui-ci](https://en.wikipedia.org/wiki/Models_of_DNA_evolution) et regarder les différents modèles.
+Quelles sont les différences générales entre ces modèles ?
+Nous allons utiliser le modèle TN93, pourquoi ce nom ? Quelles sont ses particularités ?
 ```{r}
 alignment_BIN <- alignment |> msaConvert(type = "ape::DNAbin") 
 distance_matrix <- alignment_BIN |>
@@ -82,7 +100,10 @@ distance_matrix <- alignment_BIN |>
 
 # distance_matrix |> as.data.frame() |>
 #   table.paint(clegend = 0, clabel.row = .5, clabel.col = .5)
+```
 
+Nous allons visualiser la matrice de distance avec ggplot. Décrire la structure de la fonction
+```{r}
 distance_matrix |>
   as.matrix() |> melt() |>
   ggplot(mapping = aes(x = Var1, y = Var2, fill = value)) +
@@ -93,23 +114,25 @@ distance_matrix |>
     axis.title = element_blank()
     )
 ```
-## Génération de l'arbre par UPGMA
 
+## Génération et visualisation de l'arbre par UPGMA
+Ouvrir l'aide de la fonction hclust. Comment générer un arbre avec l'algorithme UPGMA ?
 ```{r}
 hclust(distance_matrix, method = "average", members = NULL) |> plot(cex = 0.6)
 ```
-
+Commenter cet arbre
 ## Génération de l'arbre par Neighbour-Joining
-
+Ouvrir l'aide de la fonction nj(). Générer l'arbre et le visualiser avec la fonction plot().
 ```{r}
 NJ_tree <- distance_matrix |> nj()
 class(NJ_tree)
+plot(NJ_tree)
 ```
-
+Nous allons voir comment visualiser ce même arbre en utilisant le package ggtree :
 ```{r}
 ggtree(NJ_tree) + geom_tiplab() + geom_nodelab()
 ```
-
+Il est également possible d'annoter l'arbre :
 ```{r}
 ggtree(NJ_tree, layout = "circular") %<+% annotations +
   geom_tiplab(aes(color = year)) +
@@ -117,13 +140,16 @@ ggtree(NJ_tree, layout = "circular") %<+% annotations +
   ggtitle("NJ non raciné") +
   theme(legend.position = "right")
 ```
+ici, nous avons affiché coloré les noms des séquences par année de détection des souches de virus. 
 
+Nous allons raciner l'arbre de manière arbitraire. Pour commencer, explorer la structure de l'objet NJ_tree.
+Utiliser les fonctions plot() et nodelabel() pour afficher l'arbre et les numéros des noeuds.
 ```{r}
+NJ_tree
 plot(NJ_tree, cex = .6)
 nodelabels(frame = "none", cex = .6)
 ```
-
-
+Quelle séquence vous semble pertinente pour raciner l'arbre ?
 ```{r}
 NJ_tree_rooted <- NJ_tree |> root(outgroup = "CY012128") |> ladderize()
 ggtree(NJ_tree_rooted) %<+% annotations +
@@ -134,9 +160,9 @@ ggtree(NJ_tree_rooted) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
-
+Commenter cet arbre.
 ## Quelle méthode choisir ?
-
+Nous allons voir comment 
 ```{r}
 data_NJ <- data.frame(
     x = as.vector(distance_matrix),
@@ -175,11 +201,10 @@ ggplot(
 cor(data_UPGMA$x, data_UPGMA$y)^2
 ```
 
-
-
 ## Bootstrap
 
 ### Calcul des valeurs de bootstrap
+
 ```{r}
 bootstrap_rooted_NJ <- boot.phylo(
   NJ_tree_rooted,
@@ -211,6 +236,7 @@ ggtree(NJ_tree_rooted) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
+
 ### On retire les noeuds faibles
 
 ```{r}
@@ -239,6 +265,7 @@ ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
+
 # Maximum de parcimonie
 
 ## Conversion de l'alignement dans le format phyDat
@@ -247,6 +274,7 @@ ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
 alignment_phyDat <- alignment |> msaConvert(type = "phangorn::phyDat")
 class(alignment_phyDat)
 ```
+
 ## Génération de l'arbre initial
 
 ```{r}
@@ -260,11 +288,13 @@ parsimony(MP_tree_init, alignment_phyDat)
 ```
 
 ## Génération de l'arbre le plus parcimonieux
+
 ```{r}
 MP_tree <- optim.parsimony(MP_tree_init, alignment_phyDat)
 rm(MP_tree_init)
 MP_tree
 ```
+
 ```{r}
 ggtree(MP_tree, layout = "circular") %<+% annotations +
   geom_tiplab(aes(color = year)) +
@@ -286,6 +316,7 @@ ML_tree_init <- alignment_BIN |> dist.dna(model = "raw") |> nj()
 ```{r}
 pml(ML_tree_init, alignment_phyDat, k = 4)
 ```
+
 ```{r}
 table(as.character(alignment_phyDat))
 na.posi <- which(
@@ -307,10 +338,12 @@ apply(
     ylab = "Number of NAs"
   )
 ```
+
 ```{r}
 alignment_cropped <- alignment_BIN[, -na.posi]
 table(as.character(alignment_cropped))
 ```
+
 ```{r}
 alignment_cropped_phyDat <- as.phyDat(alignment_cropped)
 ```
@@ -320,6 +353,7 @@ ML_tree_init <- alignment_cropped |> dist.dna(model = "TN93") |> nj()
 ML_tree_init_L <- pml(ML_tree_init, alignment_cropped_phyDat, k = 4)
 ML_tree_init_L
 ```
+
 ## Génération de l'arbre le plus vraisemblable
 
 ```{r}
@@ -355,4 +389,3 @@ ggtree(ML_tree_rooted) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
-
