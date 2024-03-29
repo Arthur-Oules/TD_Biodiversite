@@ -295,7 +295,7 @@ Qu'en concluez-vous sur cette méthode par rapport au Neighbour-Joining ? (5 min
 
 ## Bootstrap
 Rappeler le principe du Bootstrap.\
-À quoi sert-il dans ce contxte ? (5 min)
+À quoi sert-il dans ce contexte ? (5 min)
 
 ### Calcul des valeurs de Bootstrap
 
@@ -391,7 +391,7 @@ Utiliser la fonction `parcimony()` pour calculer le score de parcimonie de l'arb
 ```{r}
 parsimony(MP_tree_init, alignment_phyDat)
 ```
-Utiliser la fonction `optim.parsimony()` pour générer l'arbre le plus parcimonieux
+Utiliser la fonction `optim.parsimony()` pour générer l'arbre le plus parcimonieux.
 ```{r}
 MP_tree <- optim.parsimony(MP_tree_init, alignment_phyDat)
 rm(MP_tree_init)
@@ -475,7 +475,7 @@ ML_tree_init_L
 ```
 
 ## Génération de l'arbre le plus vraisemblable
-Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
+Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I (Generalised time reversible + Gamma(4) + Invariants) très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
 ```{r}
 ML_tree <- optim.pml(
   ML_tree_init_L,

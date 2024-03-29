@@ -22,9 +22,6 @@ format:
 ## Chargement des packages
 
 ```{r}
-#| output: false
-#| warning: false
-
 # For data manipulation
 library(here)
 library(tidyverse)
@@ -63,8 +60,6 @@ Qu'est-ce que GenBank ? (5 min)
 Charger le fichier `data/usflu.annot.csv` avec la fonction `read_csv()` et le visualiser. (5 min)
 
 ```{r}
-#| error: false
-#| warning: false
 
 ```
 
@@ -78,8 +73,6 @@ Pouvez-vous faire des prédictions sur l'évolution de ces séquences ? (10 min)
 Nous allons télécharger les séquences correspondantes depuis Genbank avec le package `rentrez` (ne pas faire tourner le bloc sauf avec une bonne connexion internet).
 
 ```{r}
-#| error: false
-#| warning: false
 annotations |>
   mutate("sequences" = Vectorize(Get_sequence)(accession)) |> 
   select(c(accession, sequences)) |> 
@@ -96,34 +89,14 @@ Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les s
 Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction `msa()`.
 
 ```{r}
-usflu_sequences <- readDNAStringSet(file = here("output", "usflu_sequences.fasta"))
-usflu_sequences
+
 ```
 
 On va utiliser l'algorithme MUSCLE pour générer notre alignement.\
 Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignement. (5 min)
 
 ```{r}
-alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
-```
 
-```{r}
-#| echo: false
-#| eval: false
-msaPrettyPrint(
-  alignment,
-  output = "tex",
-  file = here("output", "alignment.tex"),
-  askForOverwrite = FALSE,
-  paperWidth = 12,
-  paperHeight = 12,
-  showNames = "left",
-  showLogo = "none"
-)
-tinytex::pdflatex(here("output", "alignment.tex"))
-
-msaConvert(alignment, "bios2mds::align") |> 
-  bios2mds::export.fasta(outfile = here("output", "alignment.fa"), ncol = 60, open = "w")
 ```
 
 Ouvrir le fichier `output/alignment.pdf` et observer l'alignement.
@@ -152,10 +125,7 @@ Quelles sont les différences entre ces modèles ? Nous allons utiliser le modè
 Utiliser la fonction `dist.dna()` pour générer une matrice de distance.
 
 ```{r}
-# alignment_BIN <- adegenet::fasta2DNAbin(here("output", "alignment.fa"))
-alignment_BIN <- alignment |> msaConvert(type = "ape::DNAbin") 
-distance_matrix <- alignment_BIN |>
-  dist.dna(model = "TN93")
+
 ```
 
 Nous allons visualiser la matrice de distance avec ggplot. Décrire la structure de cette portion de code. (5 min)
@@ -179,9 +149,7 @@ Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous de
 Générer et visualiser un arbre avec l'algorithme UPGMA à l'aide des fonction `upgma()` et `plot()`. Commenter cet arbre. (5 min)
 
 ```{r}
-UPGMA_tree <- upgma(distance_matrix)
-plot(UPGMA_tree, main = "Arbre UPGMA", cex = .6)
-# ggtree(UPGMA_tree) + geom_tiplab() + ggtitle("Arbre UPGMA")
+
 ```
 
 ## Génération de l'arbre par Neighbour-Joining
@@ -189,8 +157,7 @@ plot(UPGMA_tree, main = "Arbre UPGMA", cex = .6)
 Ouvrir l'aide de la fonction `NJ()`. Générer l'arbre et le visualiser avec la fonction plot().
 
 ```{r}
-NJ_tree <- distance_matrix |> NJ()
-plot(NJ_tree)
+
 ```
 
 Nous allons en profiter pour explorer la structure des arbres phylogénétiques en tant qu'objet sur R.\
@@ -200,27 +167,19 @@ Enregistrer l'arbre dans un fichier `.txt` à l'aide de la fonction `ape::write.
 Utiliser les fonctions `plot()` et `nodelabel()` pour afficher l'arbre et les numéros des nœuds. (10 min)
 
 ```{r}
-class(NJ_tree)
-NJ_tree
-NJ_tree |> ape::write.tree(here("output", "NJ_tree.txt"))
-plot(NJ_tree, cex = .6)
-nodelabels(frame = "none", cex = .6)
+
 ```
 
 Nous allons voir comment visualiser ce même arbre en utilisant le package ggtree.\
 Commenter le bloc de code suivant. Cette représentation vous semble-t-elle pertinente pour cette méthode ? (5 min)
 
 ```{r}
-#| error: false
-#| warning: false
 ggtree(NJ_tree) + geom_tiplab() + geom_nodelab() + ggtitle("NJ non raciné")
 ```
 
 Ajoutons des annotations à cet arbre :
 
 ```{r}
-#| error: false
-#| warning: false
 ggtree(NJ_tree, layout = "circular") %<+% annotations +
   geom_tiplab(aes(color = year)) +
   scale_color_viridis(option = "turbo") +
@@ -297,7 +256,7 @@ Qu'en concluez-vous sur cette méthode par rapport au Neighbour-Joining ? (5 min
 ## Bootstrap
 
 Rappeler le principe du Bootstrap.\
-À quoi sert-il dans ce contxte ? (5 min)
+À quoi sert-il dans ce contexte ? (5 min)
 
 ### Calcul des valeurs de Bootstrap
 
@@ -340,7 +299,7 @@ ggtree(NJ_tree_rooted) %<+% annotations +
 
 Commenter cet arbre. Comment améliorer cet arbre en considérant les valeurs de bootstrap ? (5 min)
 
-### On retire les noeuds faibles
+### On retire les nœuds faibles
 
 Commenter le bloc de code suivant :
 
@@ -382,10 +341,6 @@ Lire l'aide de la fonction `optim.parsimony()`, à quoi correspondent les argume
 ## Conversion de l'alignement dans le format phyDat
 
 ```{r}
-# alignment_phyDat <- read.phyDat(
-#   file = here("output", "alignment.fa"),
-#   format = "fasta"
-# )
 alignment_phyDat <- alignment |> msaConvert(type = "phangorn::phyDat")
 class(alignment_phyDat)
 ```
@@ -403,15 +358,13 @@ MP_tree_init <- alignment_BIN |> dist.dna(model = "TN93") |> NJ()
 Utiliser la fonction `parcimony()` pour calculer le score de parcimonie de l'arbre initial.
 
 ```{r}
-parsimony(MP_tree_init, alignment_phyDat)
+
 ```
 
-Utiliser la fonction `optim.parsimony()` pour générer l'arbre le plus parcimonieux
+Utiliser la fonction `optim.parsimony()` pour générer l'arbre le plus parcimonieux.
 
 ```{r}
-MP_tree <- optim.parsimony(MP_tree_init, alignment_phyDat)
-rm(MP_tree_init)
-MP_tree
+
 ```
 
 Comparer les scores de parcimonie des deux arbres.
@@ -444,7 +397,7 @@ ML_tree_init <- alignment_BIN |> dist.dna(model = "TN93") |> NJ()
 Utiliser la fonction `pml()` pour calculer la vraisemblance de l'arbre initial avec le paramètre `k = 4`. Ce paramètre décrit le nombre de classes de vitesses évolutives utilisées dans le modèle, la valeur `k = 4` est une valeur par défaut courante.
 
 ```{r}
-pml(ML_tree_init, alignment_phyDat, k = 4)
+
 ```
 
 La fonction a bien tourné mais elle est sensible à la nature des données, on va donc vérifier que le jeu de données est bien propre :
@@ -498,17 +451,15 @@ Reconvertissons le jeu de donné trié au bon format :
 alignment_cropped_phyDat <- as.phyDat(alignment_cropped)
 ```
 
-Regénérer l'arbre d'initialisation avec notre jeu de donnée nettoyé. (5 min)
+Re-générer l'arbre d'initialisation avec notre jeu de donnée nettoyé. (5 min)
 
 ```{r}
-ML_tree_init <- alignment_cropped |> dist.dna(model = "TN93") |> NJ()
-ML_tree_init_L <- pml(ML_tree_init, alignment_cropped_phyDat, k = 4)
-ML_tree_init_L
+
 ```
 
 ## Génération de l'arbre le plus vraisemblable
 
-Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
+Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I (Generalised time reversible + Gamma(4) + Invariants) très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
 
 ```{r}
 ML_tree <- optim.pml(
