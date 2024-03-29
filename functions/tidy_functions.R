@@ -14,10 +14,10 @@ Get_sequence <- function(AC_number) {
   }
 }
 
-write_to_fasta <- function(tib, filename) {
+write_to_fasta <- function(tib, path) {
 # Writes two column tib as a .fa file
 # Tibble structure must be :
 # fasta name | sequence
   tib$accession <- paste0(">", tib$accession)
-  c(rbind(tib$accession, tib$sequences)) |> write(file = here("output", paste0(filename, ".fasta")))
+  c(rbind(tib$accession, tib$sequences)) |> write(file = path)
 }
