@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Arthur Oulès, adapté de Güell et al (2017)">
+<meta name="author" content="Arthur Oulès, adapté de Thibaut Jombart (2013)">
 
 <title>TD Biodiversité</title>
 <style>
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -64,10 +64,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="biodiversity_tutorial_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="biodiversity_tutorial_files/libs/quarto-html/anchor.min.js"></script>
 <link href="biodiversity_tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="biodiversity_tutorial_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="biodiversity_tutorial_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="biodiversity_tutorial_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="biodiversity_tutorial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="biodiversity_tutorial_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="biodiversity_tutorial_files/libs/bootstrap/bootstrap-955447aa103a4d7a83b572bb70c1efcf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -80,7 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Sommaire</h2>
    
   <ul>
-  <li><a href="#chargement-des-packages-et-données" id="toc-chargement-des-packages-et-données" class="nav-link active" data-scroll-target="#chargement-des-packages-et-données">Chargement des packages et données</a>
+  <li><a href="#installation-de-r-et-rstudio" id="toc-installation-de-r-et-rstudio" class="nav-link active" data-scroll-target="#installation-de-r-et-rstudio">Installation de R et RStudio</a></li>
+  <li><a href="#installation-des-packages" id="toc-installation-des-packages" class="nav-link" data-scroll-target="#installation-des-packages">Installation des packages</a></li>
+  <li><a href="#chargement-des-packages-et-données" id="toc-chargement-des-packages-et-données" class="nav-link" data-scroll-target="#chargement-des-packages-et-données">Chargement des packages et données</a>
   <ul class="collapse">
   <li><a href="#chargement-des-packages" id="toc-chargement-des-packages" class="nav-link" data-scroll-target="#chargement-des-packages">Chargement des packages</a></li>
   <li><a href="#chargement-des-fonctions-externes" id="toc-chargement-des-fonctions-externes" class="nav-link" data-scroll-target="#chargement-des-fonctions-externes">Chargement des fonctions externes</a></li>
@@ -122,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </nav>
 </div>
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -138,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Auteur·rice</div>
     <div class="quarto-title-meta-contents">
-             <p>Arthur Oulès, adapté de <a href="https://fuzzyatelin.github.io/bioanth-stats/module-24/module-24.html#introduction">Güell <em>et al</em> (2017)</a> </p>
+             <p>Arthur Oulès, adapté de <a href="http://adegenet.r-forge.r-project.org/files/MSc-intro-phylo.1.1.pdf">Thibaut Jombart (2013)</a> </p>
           </div>
   </div>
     
@@ -147,15 +149,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
+
+<section id="installation-de-r-et-rstudio" class="level1">
+<h1>Installation de R et RStudio</h1>
+<p>Dans ce TP/TD, nous allons utiliser le language de programmation R et plus particulièrement depuis RStudio, un Environnement de Développmenet Intégré (IDE). Pour l’installation de R et Rstudio, le plus simple est encore de se rendre <a href="https://posit.co/download/rstudio-desktop/">directement sur le site de RStudio</a> et de se laisser guider.</p>
+<p>La première étape est d’installer R, ici, le site de RStudio nous redirige vers la page d’accueil du CRAN (The Comprehensive R Archive Network) qui liste les différentes distributions de R dans sa version la plus récente. Ici, je vous laisse choisir la version qui correspond à votre système d’exploitation. Si vous avez un vieux système d’exploitation, il sera peut-être nécessaire d’installer une ancienne distribution de R.</p>
+</section>
+<section id="installation-des-packages" class="level1">
+<h1>Installation des packages</h1>
+<p>Revenons au CRAN, en plus de stocker différentes version de R disponibles partout dans le monde, cette archive est sera aussi notre principale source de packages. Les packages sont des extensions à la version de base de R, codées soit en R soit en C ou Fortran compilé et souvent créés avec une utilisation précise en tête, par exemple, au hasard, la construction d’arbres phylogénétiques.</p>
+<p>Notre seconde source de package sera <a href="https://www.bioconductor.org/">Bioconductor</a> qui centralise de nombreux packages avec des usages très orientés vers la bioinformatique et tout particulièrement le traitement de données issues de wet-lab.<br>
+Cette fois, sur une installation de zéro, il faut commencer par installer BiocManager, un package qui permet d’accéder au dépôt Bioconductor directement depuis R. On utilise ensuite une fonction interne à ce package, d’où le préfixe <code>BiocManager::</code> avant la fonction, pour télécharger et installer un package de ce dépôt.</p>
+</section>
 <section id="chargement-des-packages-et-données" class="level1">
 <h1>Chargement des packages et données</h1>
 <section id="chargement-des-packages" class="level2">
 <h2 class="anchored" data-anchor-id="chargement-des-packages">Chargement des packages</h2>
+<p>Une fois un package installé, vous devriez le voir apparaître dans l’onglet package dans la fenêtre en bas à droite par défaut de RStudio. Une manière de charger manuellement un package est de cocher la case tout à gauche qui lui est associée, sinon on peut utiliser les commandes suivantes :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For data manipulation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -172,12 +188,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Pour le beau geste, une version plus compacte :</p>
 </section>
 <section id="chargement-des-fonctions-externes" class="level2">
 <h2 class="anchored" data-anchor-id="chargement-des-fonctions-externes">Chargement des fonctions externes</h2>
+<p>Pour nous simplifier la tâche, j’ai préparé quelques fonctions en avance que nous allons charger avec la fonction <code>source()</code>.<br>
+C’est aussi l’occasion de vous présenter le package <code>here</code> et l’organisation de son code en “Projets” via à RStudio.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions"</span>, <span class="st">"tidy_functions.R"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -196,8 +215,8 @@ Qu’est-ce que GenBank ? (5 min)</p>
 <h2 class="anchored" data-anchor-id="chargement-des-données">Chargement des données</h2>
 <p>Charger le fichier <code>data/usflu.annot.csv</code> avec la fonction <code>read_csv()</code> et le visualiser. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file           =</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"usflu.annot.csv"</span>),</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
@@ -214,8 +233,8 @@ Pouvez-vous faire des prédictions sur l’évolution de ces séquences ? (10 mi
 <h2 class="anchored" data-anchor-id="récupération-des-séquences-par-lot">Récupération des séquences par lot</h2>
 <p>Nous allons télécharger les séquences correspondantes depuis Genbank avec le package <code>rentrez</code> (ne pas faire tourner le bloc sauf avec une bonne connexion internet).</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>annotations <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"sequences"</span> <span class="ot">=</span> <span class="fu">Vectorize</span>(Get_sequence)(accession)) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(accession, sequences)) <span class="sc">|&gt;</span> </span>
@@ -233,8 +252,8 @@ Ouvrir la page d’aide de la fonction <code>msa()</code>.<br>
 Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 min)<br>
 Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction <code>msa()</code>.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>usflu_sequences <span class="ot">&lt;-</span> <span class="fu">readDNAStringSet</span>(<span class="at">file =</span> <span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"usflu_sequences.fasta"</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>usflu_sequences</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -257,15 +276,15 @@ Commencer par ouvrir le fichier fasta généré dans un format accepté par la f
 <p>On va utiliser l’algorithme MUSCLE pour générer notre alignement.<br>
 Utiliser la fonction <code>msa()</code> avec les bons paramètres pour générer un alignement. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alignment <span class="ot">&lt;-</span> usflu_sequences <span class="sc">|&gt;</span> <span class="fu">msa</span>(<span class="at">method =</span> <span class="st">"Muscle"</span>, <span class="at">type =</span> <span class="st">"dna"</span>, <span class="at">order =</span> <span class="st">"input"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Ouvrir le fichier <code>output/alignment.pdf</code> et observer l’alignement.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"open"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">args =</span> <span class="fu">c</span>(<span class="st">"-a Preview.app"</span>, <span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"alignment.pdf"</span>)),</span>
@@ -287,8 +306,8 @@ Combien de modèles de substitution sont disponibles ? Comparer à la fonction <
 Quelles sont les différences entre ces modèles ? Nous allons utiliser le modèle <code>TN93</code>, pourquoi ce nom ? Quelles sont ses particularités ? (5 min)<br>
 Utiliser la fonction <code>dist.dna()</code> pour générer une matrice de distance.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alignment_BIN &lt;- adegenet::fasta2DNAbin(here("output", "alignment.fa"))</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>alignment_BIN <span class="ot">&lt;-</span> alignment <span class="sc">|&gt;</span> <span class="fu">msaConvert</span>(<span class="at">type =</span> <span class="st">"ape::DNAbin"</span>) </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>distance_matrix <span class="ot">&lt;-</span> alignment_BIN <span class="sc">|&gt;</span></span>
@@ -297,8 +316,8 @@ Utiliser la fonction <code>dist.dna()</code> pour générer une matrice de dista
 </div>
 <p>Nous allons visualiser la matrice de distance avec ggplot. Décrire la structure de cette portion de code. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>distance_matrix <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span> <span class="fu">melt</span>() <span class="sc">|&gt;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Var1, <span class="at">y =</span> Var2, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
@@ -310,7 +329,11 @@ Utiliser la fonction <code>dist.dna()</code> pour générer une matrice de dista
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous des tendances ? (5 min)</p>
@@ -319,16 +342,20 @@ Utiliser la fonction <code>dist.dna()</code> pour générer une matrice de dista
 <h2 class="anchored" data-anchor-id="génération-et-visualisation-de-larbre-par-upgma">Génération et visualisation de l’arbre par UPGMA</h2>
 <p>Générer et visualiser un arbre avec l’algorithme UPGMA à l’aide des fonction <code>upgma()</code> et <code>plot()</code>. Commenter cet arbre. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>UPGMA_tree <span class="ot">&lt;-</span> <span class="fu">upgma</span>(distance_matrix)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(UPGMA_tree, <span class="at">main =</span> <span class="st">"Arbre UPGMA"</span>, <span class="at">cex =</span> .<span class="dv">6</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<details>
-<summary>Code</summary>
+</div>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggtree(UPGMA_tree) + geom_tiplab() + ggtitle("Arbre UPGMA")</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -337,13 +364,17 @@ Utiliser la fonction <code>dist.dna()</code> pour générer une matrice de dista
 <h2 class="anchored" data-anchor-id="génération-de-larbre-par-neighbour-joining">Génération de l’arbre par Neighbour-Joining</h2>
 <p>Ouvrir l’aide de la fonction <code>NJ()</code>. Générer l’arbre et le visualiser avec la fonction plot().</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>NJ_tree <span class="ot">&lt;-</span> distance_matrix <span class="sc">|&gt;</span> <span class="fu">NJ</span>()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(NJ_tree)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Nous allons en profiter pour explorer la structure des arbres phylogénétiques en tant qu’objet sur R.<br>
@@ -352,15 +383,15 @@ Lire la documentation de la fonction <code>read.tree</code>.<br>
 Enregistrer l’arbre dans un fichier <code>.txt</code> à l’aide de la fonction <code>ape::write.tree()</code>. Comment est structuré ce fichier texte ?<br>
 Utiliser les fonctions <code>plot()</code> et <code>nodelabel()</code> pour afficher l’arbre et les numéros des nœuds. (10 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(NJ_tree)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "phylo"</code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>NJ_tree</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -370,33 +401,41 @@ Phylogenetic tree with 80 tips and 78 internal nodes.
 Tip labels:
   CY013200, CY013781, CY012128, CY013613, CY012160, CY012272, ...
 
-Unrooted; includes branch lengths.</code></pre>
+Unrooted; includes branch length(s).</code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NJ_tree <span class="sc">|&gt;</span> ape<span class="sc">::</span><span class="fu">write.tree</span>(<span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"NJ_tree.txt"</span>))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(NJ_tree, <span class="at">cex =</span> .<span class="dv">6</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nodelabels</span>(<span class="at">frame =</span> <span class="st">"none"</span>, <span class="at">cex =</span> .<span class="dv">6</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Nous allons voir comment visualiser ce même arbre en utilisant le package ggtree.<br>
 Commenter le bloc de code suivant. Cette représentation vous semble-t-elle pertinente pour cette méthode ? (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(NJ_tree) <span class="sc">+</span> <span class="fu">geom_tiplab</span>() <span class="sc">+</span> <span class="fu">geom_nodelab</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"NJ non raciné"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Ajoutons des annotations à cet arbre :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(NJ_tree, <span class="at">layout =</span> <span class="st">"circular"</span>) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
@@ -404,7 +443,11 @@ Commenter le bloc de code suivant. Cette représentation vous semble-t-elle pert
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>A quoi correspondent les couleurs des feuilles de l’arbre ?<br>
@@ -412,8 +455,8 @@ Nous allons raciner l’arbre de manière arbitraire. À partir de la figure pr�
 Raciner l’arbre à l’aide de la fonction <code>root()</code>. (5 min)<br>
 </p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>NJ_tree_rooted <span class="ot">&lt;-</span> NJ_tree <span class="sc">|&gt;</span> <span class="fu">root</span>(<span class="at">outgroup =</span> <span class="st">"CY012128"</span>) <span class="sc">|&gt;</span> <span class="fu">ladderize</span>()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(NJ_tree_rooted) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
@@ -428,7 +471,11 @@ Raciner l’arbre à l’aide de la fonction <code>root()</code>. (5 min)<br>
 you can set `options(ignore.negative.edge=TRUE)`, then re-run ggtree.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Commenter cet arbre. (5 min)</p>
@@ -437,8 +484,8 @@ you can set `options(ignore.negative.edge=TRUE)`, then re-run ggtree.</code></pr
 <h2 class="anchored" data-anchor-id="quelle-méthode-choisir">Quelle méthode choisir ?</h2>
 <p>On va se servir de la matrice de distance d’origine pour tester l’adéquation de la méthode choisie pour reconstruire l’arbre aux données de départ.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data_NJ <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.vector</span>(distance_matrix),</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> NJ_tree_rooted <span class="sc">|&gt;</span> <span class="fu">cophenetic</span>() <span class="sc">|&gt;</span> <span class="fu">as.dist</span>() <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
@@ -464,7 +511,11 @@ you can set `options(ignore.negative.edge=TRUE)`, then re-run ggtree.</code></pr
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Lire l’aide de la fonction <code>cophenetic()</code>. Quelle valeur calcule-t-elle ? Quel type d’objet renvoie-t-elle ?<br>
@@ -473,8 +524,8 @@ Comment est calculé le coefficient de corrélation ? (10 min)<br>
 <br>
 Recommençons avec l’arbre généré par UPGMA :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data_UPGMA <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.vector</span>(distance_matrix),</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> UPGMA_tree <span class="sc">|&gt;</span> <span class="fu">cophenetic</span>() <span class="sc">|&gt;</span> <span class="fu">as.dist</span>() <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
@@ -494,10 +545,14 @@ Recommençons avec l’arbre généré par UPGMA :</p>
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<details>
-<summary>Code</summary>
+</div>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(data_UPGMA<span class="sc">$</span>x, data_UPGMA<span class="sc">$</span>y)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -515,8 +570,8 @@ Recommençons avec l’arbre généré par UPGMA :</p>
 <p>Nous allons générer les indices de bootstrap pour chaque nœud de l’arbre.<br>
 Commenter le bloc de code suivant :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>bootstrap_rooted_NJ <span class="ot">&lt;-</span> <span class="fu">boot.phylo</span>(</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  NJ_tree_rooted,</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  alignment_BIN,</span>
@@ -532,8 +587,8 @@ Commenter le bloc de code suivant :</p>
 Running bootstraps:       100 / 100
 Calculating bootstrap values... done.</code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>NJ_tree_rooted<span class="sc">$</span>node.label <span class="ot">&lt;-</span> bootstrap_rooted_NJ</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -542,8 +597,8 @@ Calculating bootstrap values... done.</code></pre>
 <h3 class="anchored" data-anchor-id="impression-de-larbre-bootstrappé">Impression de l’arbre bootstrappé</h3>
 <p>Nous allons afficher l’arbre précédent avec les valeurs de bootstrap que nous venons de calculer :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">ignore.negative.edge=</span><span class="cn">TRUE</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(NJ_tree_rooted) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
@@ -560,7 +615,11 @@ Calculating bootstrap values... done.</code></pre>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tree2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Commenter cet arbre. Comment améliorer cet arbre en considérant les valeurs de bootstrap ? (5 min)</p>
@@ -569,8 +628,8 @@ Calculating bootstrap values... done.</code></pre>
 <h3 class="anchored" data-anchor-id="on-retire-les-noeuds-faibles">On retire les noeuds faibles</h3>
 <p>Commenter le bloc de code suivant :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>NJ_tree_rooted_collapsed <span class="ot">&lt;-</span> NJ_tree_rooted</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>toCollapse <span class="ot">&lt;-</span> <span class="fu">match</span>(</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">which</span>(bootstrap_rooted_NJ <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">+</span> <span class="fu">length</span>(NJ_tree_rooted<span class="sc">$</span>tip.label),</span>
@@ -582,8 +641,8 @@ Calculating bootstrap values... done.</code></pre>
 </div>
 <p>Affichons notre nouvel arbre :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(NJ_tree_rooted_collapsed) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
@@ -599,7 +658,11 @@ Calculating bootstrap values... done.</code></pre>
 <span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tree2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Le comparer au précédent, comment a-t-il été modifié ? (5 min)</p>
@@ -613,8 +676,8 @@ Lire l’aide de la fonction <code>optim.parsimony()</code>, à quoi corresponde
 <section id="conversion-de-lalignement-dans-le-format-phydat" class="level2">
 <h2 class="anchored" data-anchor-id="conversion-de-lalignement-dans-le-format-phydat">Conversion de l’alignement dans le format phyDat</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alignment_phyDat &lt;- read.phyDat(</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   file = here("output", "alignment.fa"),</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   format = "fasta"</span></span>
@@ -631,8 +694,8 @@ Lire l’aide de la fonction <code>optim.parsimony()</code>, à quoi corresponde
 <h2 class="anchored" data-anchor-id="génération-de-larbre-initial">Génération de l’arbre initial</h2>
 <p>Générons un arbre par Neighbour-Joining qui permettra d’initialiser l’algorithme de maximum de parcimonie.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>MP_tree_init <span class="ot">&lt;-</span> alignment_BIN <span class="sc">|&gt;</span> <span class="fu">dist.dna</span>(<span class="at">model =</span> <span class="st">"TN93"</span>) <span class="sc">|&gt;</span> <span class="fu">NJ</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -641,8 +704,8 @@ Lire l’aide de la fonction <code>optim.parsimony()</code>, à quoi corresponde
 <h2 class="anchored" data-anchor-id="génération-de-larbre-le-plus-parcimonieux">Génération de l’arbre le plus parcimonieux</h2>
 <p>Utiliser la fonction <code>parcimony()</code> pour calculer le score de parcimonie de l’arbre initial.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parsimony</span>(MP_tree_init, alignment_phyDat)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -651,15 +714,15 @@ Lire l’aide de la fonction <code>optim.parsimony()</code>, à quoi corresponde
 </div>
 <p>Utiliser la fonction <code>optim.parsimony()</code> pour générer l’arbre le plus parcimonieux.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>MP_tree <span class="ot">&lt;-</span> <span class="fu">optim.parsimony</span>(MP_tree_init, alignment_phyDat)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Final p-score 420 after  2 nni operations </code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(MP_tree_init)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>MP_tree</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -670,13 +733,13 @@ Phylogenetic tree with 80 tips and 76 internal nodes.
 Tip labels:
   CY013200, CY013781, CY012128, CY013613, CY012160, CY012272, ...
 
-Unrooted; no branch lengths.</code></pre>
+Unrooted; no branch length.</code></pre>
 </div>
 </div>
 <p>Comparer les scores de parcimonie des deux arbres.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(MP_tree, <span class="at">layout =</span> <span class="st">"circular"</span>) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
@@ -684,7 +747,11 @@ Unrooted; no branch lengths.</code></pre>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Commenter l’arbre généré.<br>
@@ -698,8 +765,8 @@ Comment expliquer la similarité avec les arbres précédents ? (10 min)</p>
 <h2 class="anchored" data-anchor-id="initialisation">Initialisation</h2>
 <p>Similairement à la méthode du maximum de parcimonie, la méthode doit être initialisée avec un arbre :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ML_tree_init <span class="ot">&lt;-</span> alignment_BIN <span class="sc">|&gt;</span> <span class="fu">dist.dna</span>(<span class="at">model =</span> <span class="st">"TN93"</span>) <span class="sc">|&gt;</span> <span class="fu">NJ</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -707,17 +774,22 @@ Comment expliquer la similarité avec les arbres précédents ? (10 min)</p>
 <h3 class="anchored" data-anchor-id="calcul-de-la-vraisemblance-de-larbre-initial">Calcul de la vraisemblance de l’arbre initial</h3>
 <p>Utiliser la fonction <code>pml()</code> pour calculer la vraisemblance de l’arbre initial avec le paramètre <code>k = 4</code>. Ce paramètre décrit le nombre de classes de vitesses évolutives utilisées dans le modèle, la valeur <code>k = 4</code> est une valeur par défaut courante.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pml</span>(ML_tree_init, alignment_phyDat, <span class="at">k =</span> <span class="dv">4</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>model: JC+G(4) 
 loglikelihood: -5641.785 
 unconstrained loglikelihood: -4736.539 
-Discrete gamma model
+Model of rate heterogeneity: Discrete gamma model
 Number of rate categories: 4 
 Shape parameter: 1 
+       Rate Proportion
+1 0.1369538       0.25
+2 0.4767519       0.25
+3 1.0000000       0.25
+4 2.3862944       0.25
 
 Rate matrix:
   a c g t
@@ -733,8 +805,8 @@ Base frequencies:
 </div>
 <p>La fonction a bien tourné mais elle est sensible à la nature des données, on va donc vérifier que le jeu de données est bien propre :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>alignment_phyDat <span class="sc">|&gt;</span> <span class="fu">as.character</span>() <span class="sc">|&gt;</span> <span class="fu">table</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -748,8 +820,8 @@ Lire <a href="https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html">
 </p>
 <p>Enregistrons leur position dans un objet :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>na.posi <span class="ot">&lt;-</span> <span class="fu">which</span>(</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.character</span>(alignment_BIN),</span>
@@ -762,8 +834,8 @@ Lire <a href="https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html">
 <p>Voyons la distribution de ces lettres :<br>
 Commenter le bloc ce code ci-après. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>(alignment_BIN),</span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,</span>
@@ -777,13 +849,17 @@ Commenter le bloc ce code ci-après. (5 min)</p>
 <span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Retirons les lettres différentes de a, t, c et g et vérifions que ça a bien fonctionné :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>alignment_cropped <span class="ot">&lt;-</span> alignment_BIN[, <span class="sc">-</span>na.posi]</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>alignment_cropped <span class="sc">|&gt;</span> <span class="fu">as.character</span>() <span class="sc">|&gt;</span> <span class="fu">table</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -795,15 +871,15 @@ Commenter le bloc ce code ci-après. (5 min)</p>
 </div>
 <p>Reconvertissons le jeu de donné trié au bon format :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>alignment_cropped_phyDat <span class="ot">&lt;-</span> <span class="fu">as.phyDat</span>(alignment_cropped)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Regénérer l’arbre d’initialisation avec notre jeu de donnée nettoyé. (5 min)</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>ML_tree_init <span class="ot">&lt;-</span> alignment_cropped <span class="sc">|&gt;</span> <span class="fu">dist.dna</span>(<span class="at">model =</span> <span class="st">"TN93"</span>) <span class="sc">|&gt;</span> <span class="fu">NJ</span>()</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>ML_tree_init_L <span class="ot">&lt;-</span> <span class="fu">pml</span>(ML_tree_init, alignment_cropped_phyDat, <span class="at">k =</span> <span class="dv">4</span>)</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>ML_tree_init_L</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -812,9 +888,14 @@ Commenter le bloc ce code ci-après. (5 min)</p>
 <pre><code>model: JC+G(4) 
 loglikelihood: -5184.119 
 unconstrained loglikelihood: -4043.367 
-Discrete gamma model
+Model of rate heterogeneity: Discrete gamma model
 Number of rate categories: 4 
 Shape parameter: 1 
+       Rate Proportion
+1 0.1369538       0.25
+2 0.4767519       0.25
+3 1.0000000       0.25
+4 2.3862944       0.25
 
 Rate matrix:
   a c g t
@@ -834,8 +915,8 @@ Base frequencies:
 <h2 class="anchored" data-anchor-id="génération-de-larbre-le-plus-vraisemblable">Génération de l’arbre le plus vraisemblable</h2>
 <p>Utiliser la fonction <code>optim.pml()</code> pour générer l’arbre optimal avec les paramètres <code>model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE</code>, ce qui correspond à un modèle GTR + G(4) + I (Generalised time reversible + Gamma(4) + Invariants) très standard pour ce genre d’application. Il est également possible d’utiliser la fonction <code>modelTest()</code> pour choisir un modèle approprié automatiquement.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>ML_tree <span class="ot">&lt;-</span> <span class="fu">optim.pml</span>(</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  ML_tree_init_L,</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">model    =</span> <span class="st">"GTR"</span>,</span>
@@ -848,77 +929,75 @@ Base frequencies:
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>optimize edge weights:  -5139.288 --&gt; -5121.539 
-optimize base frequencies:  -5121.539 --&gt; -5121.31 
-optimize rate matrix:  -5121.31 --&gt; -4933.863 
-optimize shape parameter:  -4933.863 --&gt; -4919.639 
-optimize edge weights:  -4919.639 --&gt; -4919.323 
-optimize topology:  -4919.323 --&gt; -4916.185  NNI moves:  2 
-optimize base frequencies:  -4916.185 --&gt; -4915.89 
-optimize rate matrix:  -4915.89 --&gt; -4915.868 
-optimize shape parameter:  -4915.868 --&gt; -4915.868 
-optimize edge weights:  -4915.868 --&gt; -4915.867 
-optimize topology:  -4915.867 --&gt; -4915.867  NNI moves:  0 
-optimize base frequencies:  -4915.867 --&gt; -4915.866 
-optimize rate matrix:  -4915.866 --&gt; -4915.866 
-optimize shape parameter:  -4915.866 --&gt; -4915.866 
-optimize edge weights:  -4915.866 --&gt; -4915.866 
-optimize base frequencies:  -4915.866 --&gt; -4915.866 
-optimize rate matrix:  -4915.866 --&gt; -4915.866 
-optimize shape parameter:  -4915.866 --&gt; -4915.866 
-optimize edge weights:  -4915.866 --&gt; -4915.866 </code></pre>
+optimize rate matrix:  -5121.539 --&gt; -4933.61 
+optimize shape parameter:  -4933.61 --&gt; -4919.39 
+optimize edge weights:  -4919.39 --&gt; -4919.078 
+optimize topology:  -4919.078 --&gt; -4915.934  NNI moves:  2 
+optimize rate matrix:  -4915.934 --&gt; -4915.899 
+optimize shape parameter:  -4915.899 --&gt; -4915.898 
+optimize edge weights:  -4915.898 --&gt; -4915.898 
+optimize topology:  -4915.898 --&gt; -4915.898  NNI moves:  0 
+optimize rate matrix:  -4915.898 --&gt; -4915.898 
+optimize shape parameter:  -4915.898 --&gt; -4915.898 
+optimize edge weights:  -4915.898 --&gt; -4915.898 </code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>ML_tree</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>model: GTR+G(4) 
-loglikelihood: -4915.866 
+loglikelihood: -4915.898 
 unconstrained loglikelihood: -4043.367 
-Discrete gamma model
+Model of rate heterogeneity: Discrete gamma model
 Number of rate categories: 4 
-Shape parameter: 0.2829869 
+Shape parameter: 0.2826837 
+         Rate Proportion
+1 0.003996013       0.25
+2 0.091111301       0.25
+3 0.565542826       0.25
+4 3.339349861       0.25
 
 Rate matrix:
-          a          c         g          t
-a 0.0000000  2.3834491 8.2951462  0.8556857
-c 2.3834491  0.0000000 0.1486637 10.0773098
-g 8.2951462  0.1486637 0.0000000  1.0000000
-t 0.8556857 10.0773098 1.0000000  0.0000000
+         a          c         g         t
+a 0.000000  2.3849152 8.3016092  0.863043
+c 2.384915  0.0000000 0.1472685 10.080389
+g 8.301609  0.1472685 0.0000000  1.000000
+t 0.863043 10.0803894 1.0000000  0.000000
 
 Base frequencies:  
         a         c         g         t 
-0.3416376 0.1953256 0.2243397 0.2386970 </code></pre>
+0.3398051 0.1966759 0.2259102 0.2376088 </code></pre>
 </div>
 </div>
 <p>Comparons notre arbre optimal avec l’arbre initial généré par Neighbour-Joining :</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(ML_tree_init_L, ML_tree)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood Ratio Test Table
   Log lik.  Df Df change Diff log lik. Pr(&gt;|Chi|)    
 1  -5184.1 158                                       
-2  -4915.9 166         8        536.51  &lt; 2.2e-16 ***
+2  -4915.9 166         8        536.44  &lt; 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(ML_tree_init_L, ML_tree)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                df      AIC
 ML_tree_init_L 158 10684.24
-ML_tree        166 10163.73</code></pre>
+ML_tree        166 10163.80</code></pre>
 </div>
 </div>
 <p>Lire l’aide de la fonction <code>AIC</code>. À quoi sert l’indice d’Akaike ? (5 min) Affichons notre super arbre !</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
+<details class="code-fold">
+<summary>Afficher le code</summary>
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>ML_tree_rooted <span class="ot">&lt;-</span> ML_tree<span class="sc">$</span>tree <span class="sc">|&gt;</span> <span class="fu">root</span>(<span class="at">outgroup =</span> <span class="st">"CY012128"</span>) <span class="sc">|&gt;</span> <span class="fu">ladderize</span>()</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtree</span>(ML_tree_rooted) <span class="sc">%&lt;+%</span> annotations <span class="sc">+</span></span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span></span>
@@ -935,7 +1014,11 @@ ML_tree        166 10163.73</code></pre>
 <span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tree2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="biodiversity_tutorial_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -978,18 +1061,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1021,7 +1093,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1073,10 +1165,34 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1086,8 +1202,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1099,7 +1224,129 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1143,6 +1390,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1168,6 +1416,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1225,25 +1499,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-          // default icon
-          link.classList.add("external");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
