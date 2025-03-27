@@ -1,4 +1,5 @@
 ---
+output-dir: docs
 title: "TD Biodiversité"
 author: Arthur Oulès, adapté de [Thibaut Jombart (2013)](http://adegenet.r-forge.r-project.org/files/MSc-intro-phylo.1.1.pdf)
 editor: source
