@@ -62,7 +62,7 @@ BiocManager::install("ggtree")
 
 ## Chargement des packages
 
-Une fois un package installé, vous devriez le voir apparaître dans l'onglet package dans la fenêtre en bas à droite par défaut de RStudio. Une manière de charger manuellement un package est de cocher la case tout à gauche qui lui est associée, sinon on peut utiliser les commandes suivantes :
+Une fois un package installé, vous devriez le voir apparaître dans l'onglet "Packages" de la fenêtre en bas à droite de RStudio (par défaut). Une manière de charger manuellement un package est de cocher la case tout à gauche qui lui est associée, sinon on peut utiliser la fonction `library()` :
 
 ```{r}
 #| output: false
@@ -109,11 +109,20 @@ C'est aussi l'occasion de vous présenter le package `here` et l'organisation de
 source(here("functions", "tidy_functions.R"))
 ```
 
+Lors de la création d'un "projet" RStudio, un dossier de travail est créé. Prenons l'exemple de celui-ci, ce dossier contient plusieurs fichiers :
+- `TD_Biodiversite.Rproj`
+- `.RData`
+- `.Rhistory`
+
+Ces fichiers existent dans tous les projets RStudio. Quant aux dossiers et fichiers `.qmd`, ils sont propres à ce projet.\
+Ce fichier de travail est un "Quarto MarkDown", c'est un fichier texte dans lequel se mélangent blocs de code et texte mis en page. [Quarto](https://quarto.org/) est développé par [Posit](https://posit.co/), la société qui développe Rstudio et le [Tidyverse](https://www.tidyverse.org/) dont nous parlerons plus tard.
+
 # Préliminaires
 
+Maintenant, commençons les choses sérieuses !\
 Dans le cadre de ce TP/TD, nous allons apprendre à générer des arbres phylogénétiques à partir de séquences ADN récupérées sur GenBank par diverses méthodes de construction d'arbre et les comparer entre elles.
 
-Quel est le protocole général pour construire un arbre phylogénétique à partir de séquences ADN ?
+Quel est le protocole général pour construire un arbre phylogénétique à partir de séquences ADN ? (5 min)
 
 # Acquisition des séquences
 
