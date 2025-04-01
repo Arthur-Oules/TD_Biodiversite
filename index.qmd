@@ -70,7 +70,6 @@ Une fois un package installé, vous devriez le voir apparaître dans l'onglet pa
 # For data manipulation
 library(here)
 library(tidyverse)
-library(reshape2)
 library(rentrez)
 
 # For Phylogenetics
@@ -170,7 +169,7 @@ On va utiliser l'algorithme MUSCLE pour générer notre alignement.\
 Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignement. (5 min)
 
 ```{r}
-alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
+alignment <- msa(usflu_sequences, method = "Muscle", type = "dna", order = "input")
 
 alignment |>
   msaConvert(type = "phangorn::phyDat") |> 
@@ -196,19 +195,19 @@ Utiliser la fonction `dist.dna()` pour générer une matrice de distance.
 
 ```{r}
 # alignment_BIN <- adegenet::fasta2DNAbin(here("output", "alignment.fa"))
-alignment_BIN <- alignment |> msaConvert(type = "ape::DNAbin") 
-distance_matrix <- alignment_BIN |>
-  dist.dna(model = "TN93")
+alignment_BIN <- msaConvert(alignment, type = "ape::DNAbin") 
+distance_matrix <- dist.dna(alignment_BIN, model = "TN93")
 ```
 
 Nous allons visualiser la matrice de distance avec ggplot. Décrire la structure de cette portion de code. (5 min)
 
 ```{r}
 distance_matrix |>
-  as.matrix() |> melt() |>
-  ggplot(mapping = aes(x = Var1, y = Var2, fill = value)) +
+  as.matrix() |>
+  as.data.frame.table() |>
+  ggplot(mapping = aes(x = Var1, y = Var2, fill = Freq)) +
   geom_raster() +
-  scale_fill_viridis() +
+  scale_fill_viridis(name = "Distance") +
   ggtitle("Heatmap de la matrice des distances") +
   theme(
     axis.title = element_blank()
