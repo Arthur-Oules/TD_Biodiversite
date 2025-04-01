@@ -37,10 +37,9 @@ Revenons au CRAN, en plus de stocker différentes version de R disponibles parto
 install.packages("here")
 install.packages("tidyverse")
 install.packages("rentrez")
-
+install.packages("msaR")
 install.packages("ape")
 install.packages("phangorn")
-
 install.packages("viridis")
 ```
 
@@ -77,6 +76,7 @@ library(rentrez)
 # For Phylogenetics
 library(ape)
 library(msa)
+library(msaR)
 library(phangorn)
 
 # For visualization
@@ -90,7 +90,7 @@ Pour le beau geste, une version plus compacte :
 #| echo: false
 #| eval: false
 
-c("here", "tidyverse", "reshape2", "rentrez", "ape", "msa", "phanghorn",
+c("here", "tidyverse", "reshape2", "rentrez", "ape", "msa", "msaR", "phanghorn",
   "ggtree", "viridis") |>
   lapply(library, character.only = TRUE) |> invisible()
 ```
