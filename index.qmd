@@ -128,6 +128,7 @@ annotations <- read_csv(
   file           = here("data", "usflu.annot.csv"),
   show_col_types = FALSE
 ) |> select(c(-1))
+
 view(annotations)
 ```
 
@@ -148,6 +149,8 @@ annotations |>
   mutate("sequences" = Vectorize(Get_sequence)(accession)) |> 
   select(c(accession, sequences)) |> 
   write_to_fasta(path = here("output", "usflu_sequences.fasta"))
+
+shell(here("output", "usflu_sequences.fasta"))
 ```
 
 # Alignement des séquences
@@ -168,36 +171,12 @@ Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignem
 
 ```{r}
 alignment <- usflu_sequences |> msa(method = "Muscle", type = "dna", order = "input")
-```
 
-```{r}
-#| echo: false
-#| eval: false
+alignment |>
+  msaConvert(type = "phangorn::phyDat") |> 
+  phangorn::write.phyDat(here("output", "alignement.fasta"), format = "fasta")
 
-msaPrettyPrint(
-  alignment,
-  output = "tex",
-  file = here("output", "alignment.tex"),
-  askForOverwrite = FALSE,
-  paperWidth = 12,
-  paperHeight = 12,
-  showNames = "left",
-  showLogo = "none"
-)
-tinytex::pdflatex(here("output", "alignment.tex"))
-
-msaConvert(alignment, "bios2mds::align") |> 
-  bios2mds::export.fasta(outfile = here("output", "alignment.fa"), ncol = 60, open = "w")
-```
-
-Ouvrir le fichier `output/alignment.pdf` et observer l'alignement.
-
-```{r}
-system2(
-  "open",
-  args = c("-a Preview.app", here("output", "alignment.pdf")),
-  wait = FALSE
-)
+msaR(here("output", "alignement.fasta"), menu = FALSE, overviewbox = F)
 ```
 
 Maintenant que nous avons aligné nos séquences, nous pouvons passer à la suite !\
