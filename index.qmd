@@ -208,10 +208,11 @@ distance_matrix |>
   ggplot(mapping = aes(x = Var1, y = Var2, fill = Freq)) +
   geom_raster() +
   scale_fill_viridis(name = "Distance") +
+  scale_x_discrete(position = "top") +
+  scale_y_discrete(limits = rev) +
   ggtitle("Heatmap de la matrice des distances") +
-  theme(
-    axis.title = element_blank()
-  )
+  guides(x = guide_axis(angle = 90)) +
+  theme(axis.title = element_blank())
 ```
 Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous des tendances ? (5 min)
 
