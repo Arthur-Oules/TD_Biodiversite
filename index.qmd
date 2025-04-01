@@ -20,15 +20,16 @@ format:
 
 # Installation de R et RStudio
 
-Dans ce TP/TD, nous allons utiliser le language de programmation R et plus particulièrement depuis RStudio, un Environnement de Développmenet Intégré (IDE).
-Pour l'installation de R et Rstudio, le plus simple est encore de se rendre [directement sur le site de RStudio](https://posit.co/download/rstudio-desktop/) et de se laisser guider.
+Dans ce TP/TD, nous allons utiliser le language de programmation R et depuis RStudio, un Environnement de Développmenet Intégré (IDE). Pour l'installation de R et Rstudio, le plus simple est encore de se rendre [directement sur le site de RStudio](https://posit.co/download/rstudio-desktop/) et de se laisser guider.
 
-La première étape est d'installer R, ici, le site de RStudio nous redirige vers la page d'accueil du CRAN (The Comprehensive R Archive Network) qui liste les différentes distributions de R dans sa version la plus récente. Ici, je vous laisse choisir la version qui correspond à votre système d'exploitation. Si vous avez un vieux système d'exploitation, il sera peut-être nécessaire d'installer une ancienne distribution de R.
+La première étape est d'installer R, ici, le site de RStudio nous redirige vers la page d'accueil du CRAN (The Comprehensive R Archive Network), une archive en ligne qui liste les différentes distributions de R dans sa version la plus récente.\
+Ici, je vous laisse choisir la version qui correspond à votre système d'exploitation. Si vous avez un ancien système d'exploitation, il sera peut-être nécessaire d'installer une ancienne distribution de R.
 
 # Installation des packages
 
-Revenons au CRAN, en plus de stocker différentes version de R disponibles partout dans le monde, cette archive est sera aussi notre principale source de packages. Les packages sont des extensions à la version de base de R, codées soit en R soit en C ou Fortran compilé et souvent créés avec une utilisation précise en tête, par exemple, au hasard, la construction d'arbres phylogénétiques.
-
+Revenons au CRAN, en plus de stocker différentes version de R et de les rendre disponibles au téléchargement partout dans le monde, cette archive sera aussi notre principale source de packages.\
+Les packages sont des extensions à la version de base de R, codées soit en R soit en C ou Fortran compilé et souvent créés avec une utilisation précise en tête, par exemple, au hasard, la construction d'arbres phylogénétiques.\
+Pour installer un package depuis CRAN, rien de plus simple, il suffit d'utiliser la fonction `install.packages`.
 
 ```{r}
 #| echo: false
@@ -43,7 +44,7 @@ install.packages("phangorn")
 install.packages("viridis")
 ```
 
-Notre seconde source de package sera [Bioconductor](https://www.bioconductor.org/) qui centralise de nombreux packages avec des usages très orientés vers la bioinformatique et tout particulièrement le traitement de données issues de wet-lab.\
+Notre seconde source de package sera [Bioconductor](https://www.bioconductor.org/) qui centralise de nombreux packages avec un usages orienté vers la bioinformatique et tout particulièrement le traitement de données issues de wet-lab.\
 Cette fois, sur une installation de zéro, il faut commencer par installer BiocManager, un package qui permet d'accéder au dépôt Bioconductor directement depuis R. On utilise ensuite une fonction interne à ce package, d'où le préfixe `BiocManager::` avant la fonction, pour télécharger et installer un package de ce dépôt.
 
 ```{r}
@@ -94,11 +95,15 @@ c("here", "tidyverse", "reshape2", "rentrez", "ape", "msa", "msaR", "phanghorn",
   lapply(library, character.only = TRUE) |> invisible()
 ```
 
+C'est aussi l'occasion de faire une révision sur les objets dans R et de découvrir l'opérateur pipe `|>`.\
+Deuxième point, la fonction `lapply()`. Tapez `?lapply` dans la console ou utilisez la touche `F1` avec le curseur de saisie sur la fonction depuis la console, cette commande appelle l'aide de R pour une fonction donnée. Toutes les fonctions, qu'elles soient dans R de base ou dans un package ont une aide (plus ou moins garnie...).
+
+Quel est l'intérêt de la famille de fonctions apply ? (5 minutes)
 
 ## Chargement des fonctions externes
 
 Pour nous simplifier la tâche, j'ai préparé quelques fonctions en avance que nous allons charger avec la fonction `source()`.\
-C'est aussi l'occasion de vous présenter le package `here` et l'organisation de son code en "Projets" via à RStudio.
+C'est aussi l'occasion de vous présenter le package `here` et l'organisation de son code en "Projets" via RStudio.
 
 ```{r}
 source(here("functions", "tidy_functions.R"))
@@ -153,12 +158,13 @@ shell(here("output", "usflu_sequences.fasta"))
 ```
 
 # Alignement des séquences
+
 Rappeler le principe de l'alignement de séquences. (5min)\
 
 Le package `msa` (Multiple Sequence Alignment) permet d'utiliser les algorithmes classiques d'alignement de multiples séquences directement depuis `R`.\
 Ouvrir la page d'aide de la fonction `msa()`.\
 Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 min)\
-Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction `msa()`. 
+Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction `msa()`.
 
 ```{r}
 usflu_sequences <- readDNAStringSet(file = here("output", "usflu_sequences.fasta"))
@@ -214,6 +220,7 @@ distance_matrix |>
   guides(x = guide_axis(angle = 90)) +
   theme(axis.title = element_blank())
 ```
+
 Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous des tendances ? (5 min)
 
 ## Génération et visualisation de l'arbre par UPGMA
@@ -234,6 +241,7 @@ Ouvrir l'aide de la fonction `NJ()`. Générer l'arbre et le visualiser avec la 
 NJ_tree <- distance_matrix |> NJ()
 plot(NJ_tree)
 ```
+
 Nous allons en profiter pour explorer la structure des arbres phylogénétiques en tant qu'objet sur R.\
 Pour commencer, explorer la structure de l'objet `NJ_tree` à l'aide de la fonction `class()` et de l'opérateur `$`\
 Lire la documentation de la fonction `read.tree`.\
@@ -308,6 +316,7 @@ ggplot(data = data_NJ, mapping = aes(x = x, y = y)) +
   ylab("Distances par paires de l'arbre") +
   theme_bw()
 ```
+
 Lire l'aide de la fonction `cophenetic()`. Quelle valeur calcule-t-elle ? Quel type d'objet renvoie-t-elle ?\
 Que représente ce graphique ? Comment l'interpréter ?\
 Comment est calculé le coefficient de corrélation ? (10 min)\
@@ -331,9 +340,11 @@ ggplot(
   theme_bw()
 cor(data_UPGMA$x, data_UPGMA$y)^2
 ```
+
 Qu'en concluez-vous sur cette méthode par rapport au Neighbour-Joining ? (5 min)
 
 ## Bootstrap
+
 Rappeler le principe du Bootstrap.\
 À quoi sert-il dans ce contexte ? (5 min)
 
@@ -341,6 +352,7 @@ Rappeler le principe du Bootstrap.\
 
 Nous allons générer les indices de bootstrap pour chaque nœud de l'arbre.\
 Commenter le bloc de code suivant :
+
 ```{r}
 bootstrap_rooted_NJ <- boot.phylo(
   NJ_tree_rooted,
@@ -355,7 +367,9 @@ NJ_tree_rooted$node.label <- bootstrap_rooted_NJ
 ```
 
 ### Impression de l'arbre bootstrappé
+
 Nous allons afficher l'arbre précédent avec les valeurs de bootstrap que nous venons de calculer :
+
 ```{r}
 options(ignore.negative.edge=TRUE)
 ggtree(NJ_tree_rooted) %<+% annotations +
@@ -372,11 +386,13 @@ ggtree(NJ_tree_rooted) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
+
 Commenter cet arbre. Comment améliorer cet arbre en considérant les valeurs de bootstrap ? (5 min)
 
 ### On retire les noeuds faibles
 
 Commenter le bloc de code suivant :
+
 ```{r}
 NJ_tree_rooted_collapsed <- NJ_tree_rooted
 toCollapse <- match(
@@ -388,6 +404,7 @@ NJ_tree_rooted_collapsed <- di2multi(NJ_tree_rooted_collapsed, tol = 0.00001)
 ```
 
 Affichons notre nouvel arbre :
+
 ```{r}
 ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
   geom_tiplab(aes(color = year)) +
@@ -403,9 +420,11 @@ ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
+
 Le comparer au précédent, comment a-t-il été modifié ? (5 min)
 
 # Maximum de parcimonie
+
 Rappeler le principe du maximum de parcimonie.\
 Lire l'aide de la fonction `optim.parsimony()`, à quoi correspondent les arguments `tree` et `data` ? Comment le relier au principe de la méthode ? Comment l'arbre optimal est-il obtenu ? (5 min)
 
@@ -421,22 +440,29 @@ class(alignment_phyDat)
 ```
 
 ## Génération de l'arbre initial
+
 Générons un arbre par Neighbour-Joining qui permettra d'initialiser l'algorithme de maximum de parcimonie.
+
 ```{r}
 MP_tree_init <- alignment_BIN |> dist.dna(model = "TN93") |> NJ()
 ```
 
 ## Génération de l'arbre le plus parcimonieux
+
 Utiliser la fonction `parcimony()` pour calculer le score de parcimonie de l'arbre initial.
+
 ```{r}
 parsimony(MP_tree_init, alignment_phyDat)
 ```
+
 Utiliser la fonction `optim.parsimony()` pour générer l'arbre le plus parcimonieux.
+
 ```{r}
 MP_tree <- optim.parsimony(MP_tree_init, alignment_phyDat)
 rm(MP_tree_init)
 MP_tree
 ```
+
 Comparer les scores de parcimonie des deux arbres.
 
 ```{r}
@@ -446,32 +472,41 @@ ggtree(MP_tree, layout = "circular") %<+% annotations +
   ggtitle("Arbre maximum de parcimonie") +
   theme(legend.position = "right")
 ```
+
 Commenter l'arbre généré.\
 Comment expliquer la similarité avec les arbres précédents ? (10 min)
 
 # Maximum de vraisemblance
+
 Rappeler le principe du maximum de vraisemblance. (5 min)
 
 ## Initialisation
+
 Similairement à la méthode du maximum de parcimonie, la méthode doit être initialisée avec un arbre :
+
 ```{r}
 ML_tree_init <- alignment_BIN |> dist.dna(model = "TN93") |> NJ()
 ```
 
 ### Calcul de la vraisemblance de l'arbre initial
+
 Utiliser la fonction `pml()` pour calculer la vraisemblance de l'arbre initial avec le paramètre `k = 4`. Ce paramètre décrit le nombre de classes de vitesses évolutives utilisées dans le modèle, la valeur `k = 4` est une valeur par défaut courante.
+
 ```{r}
 pml(ML_tree_init, alignment_phyDat, k = 4)
 ```
 
-La fonction a bien tourné mais elle est sensible à la nature des données, on va donc vérifier que le jeu de données est bien propre : 
+La fonction a bien tourné mais elle est sensible à la nature des données, on va donc vérifier que le jeu de données est bien propre :
+
 ```{r}
 alignment_phyDat |> as.character() |> table()
 ```
+
 Certains caractères de nos séquences ne correspondent pas aux bases azotées traditionnelles !\
-Lire [cette page](https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html) et identifier à quoi correspondent les lettres différentes de a, t, c et g.\ À quoi correspondent les `'-'` ? (5 min).\
+Lire [cette page](https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html) et identifier à quoi correspondent les lettres différentes de a, t, c et g. À quoi correspondent les `'-'` ? (5 min).\
 
 Enregistrons leur position dans un objet :
+
 ```{r}
 na.posi <- which(
   apply(
@@ -484,6 +519,7 @@ na.posi <- which(
 
 Voyons la distribution de ces lettres :\
 Commenter le bloc ce code ci-après. (5 min)
+
 ```{r}
 apply(
   as.character(alignment_BIN),
@@ -497,17 +533,22 @@ apply(
     ylab = "Number of NAs"
   )
 ```
+
 Retirons les lettres différentes de a, t, c et g et vérifions que ça a bien fonctionné :
+
 ```{r}
 alignment_cropped <- alignment_BIN[, -na.posi]
 alignment_cropped |> as.character() |> table()
 ```
+
 Reconvertissons le jeu de donné trié au bon format :
+
 ```{r}
 alignment_cropped_phyDat <- as.phyDat(alignment_cropped)
 ```
 
 Regénérer l'arbre d'initialisation avec notre jeu de donnée nettoyé. (5 min)
+
 ```{r}
 ML_tree_init <- alignment_cropped |> dist.dna(model = "TN93") |> NJ()
 ML_tree_init_L <- pml(ML_tree_init, alignment_cropped_phyDat, k = 4)
@@ -515,7 +556,9 @@ ML_tree_init_L
 ```
 
 ## Génération de l'arbre le plus vraisemblable
+
 Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I (Generalised time reversible + Gamma(4) + Invariants) très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
+
 ```{r}
 ML_tree <- optim.pml(
   ML_tree_init_L,
@@ -528,13 +571,16 @@ ML_tree <- optim.pml(
 )
 ML_tree
 ```
+
 Comparons notre arbre optimal avec l'arbre initial généré par Neighbour-Joining :
+
 ```{r}
 anova(ML_tree_init_L, ML_tree)
 AIC(ML_tree_init_L, ML_tree)
 ```
-Lire l'aide de la fonction `AIC`. À quoi sert l'indice d'Akaike ? (5 min)
-Affichons notre super arbre !
+
+Lire l'aide de la fonction `AIC`. À quoi sert l'indice d'Akaike ? (5 min) Affichons notre super arbre !
+
 ```{r}
 ML_tree_rooted <- ML_tree$tree |> root(outgroup = "CY012128") |> ladderize()
 ggtree(ML_tree_rooted) %<+% annotations +
