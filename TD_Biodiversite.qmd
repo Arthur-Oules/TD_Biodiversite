@@ -1,5 +1,4 @@
 ---
-output-dir: docs
 title: "TD Biodiversité"
 author: Arthur Oulès, adapté de [Thibaut Jombart (2013)](http://adegenet.r-forge.r-project.org/files/MSc-intro-phylo.1.1.pdf)
 editor: source
@@ -109,10 +108,7 @@ C'est aussi l'occasion de vous présenter le package `here` et l'organisation de
 source(here("functions", "tidy_functions.R"))
 ```
 
-Lors de la création d'un "projet" RStudio, un dossier de travail est créé. Prenons l'exemple de celui-ci, ce dossier contient plusieurs fichiers :
-- `TD_Biodiversite.Rproj`
-- `.RData`
-- `.Rhistory`
+Lors de la création d'un "projet" RStudio, un dossier de travail est créé. Prenons l'exemple de celui-ci, ce dossier contient plusieurs fichiers : - `TD_Biodiversite.Rproj` - `.RData` - `.Rhistory`
 
 Ces fichiers existent dans tous les projets RStudio. Quant aux dossiers et fichiers `.qmd`, ils sont propres à ce projet.\
 Ce fichier de travail est un "Quarto MarkDown", c'est un fichier texte dans lequel se mélangent blocs de code et texte mis en page. [Quarto](https://quarto.org/) est développé par [Posit](https://posit.co/), la société qui développe Rstudio et le [Tidyverse](https://www.tidyverse.org/) dont nous parlerons plus tard.
@@ -122,16 +118,16 @@ Ce fichier de travail est un "Quarto MarkDown", c'est un fichier texte dans lequ
 Maintenant, commençons les choses sérieuses !\
 Dans le cadre de ce TP/TD, nous allons apprendre à générer des arbres phylogénétiques à partir de séquences ADN récupérées sur GenBank par diverses méthodes de construction d'arbre et les comparer entre elles.
 
-Quel est le protocole général pour construire un arbre phylogénétique à partir de séquences ADN ? (5 min)
+Quel est le protocole général pour construire un arbre phylogénétique à partir de séquences ADN ? (5 minutes)
 
 # Acquisition des séquences
 
 Nous allons commencer par récupérer les séquences d’intérêts sur Genbank directement depuis `R`.\
-Qu'est-ce que [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) ? (5 min)
+Qu'est-ce que [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) ? (5 minutes)
 
 ## Chargement des données
 
-Charger le fichier `data/usflu.annot.csv` avec la fonction `read_csv()` et le visualiser. (5 min)
+Charger le fichier `data/usflu.annot.csv` avec la fonction `read_csv()` et le visualiser. (5 minutes)
 
 ```{r}
 #| error: false
@@ -145,11 +141,10 @@ annotations <- read_csv(
 view(annotations)
 ```
 
-Aller sur [GenBank](https://www.ncbi.nlm.nih.gov/nucleotide/) et entrer un numéro d'accès dans la barre de recherche.
-À quoi correspond cette séquence ?\
+Aller sur [GenBank](https://www.ncbi.nlm.nih.gov/nucleotide/) et entrer un numéro d'accès dans la barre de recherche. À quoi correspond cette séquence ?\
 Pourquoi l'indication "Segment 4" ?\
 À quoi correspond la protéine codée par ce gène ? Quel est le rapport avec le nom du variant ?\
-Pourqu'oi s'intéresser à cette séquence en particulier ? (10 min)
+Pourqu'oi s'intéresser à cette séquence en particulier ? (10 minutes)
 
 ## Récupération des séquences par lot
 
@@ -181,11 +176,11 @@ shell(here("output", "usflu_sequences.fasta"))
 
 # Alignement des séquences
 
-Rappeler le principe de l'alignement de séquences. (5min)\
+Rappeler le principe de l'alignement de séquences. (5minutes)\
 
 Le package `msa` (Multiple Sequence Alignment) permet d'utiliser les algorithmes classiques d'alignement de multiples séquences directement depuis `R`.\
 Ouvrir la page d'aide de la fonction `msa()`.\
-Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 min)
+Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 minutes)
 
 Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction `msa()`.
 
@@ -195,11 +190,15 @@ usflu_sequences
 ```
 
 On va utiliser l'algorithme [MUSCLE](https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)) pour générer notre alignement. Pour les curieux, vous pouvez lire [ici](https://help.geneious.com/hc/en-us/articles/360044627712-Which-multiple-alignment-algorithm-should-I-use) une description des algorithmes plus connus et utilisés.\
-Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignement. (5 min)
+Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignement. (5 minutes)
 
 ```{r}
 alignment <- msa(usflu_sequences, method = "Muscle", type = "dna", order = "input")
+```
 
+Maintenant, visualisons notre alignement :
+
+```{r}
 alignment |>
   msaConvert(type = "phangorn::phyDat") |> 
   phangorn::write.phyDat(here("output", "alignement.fasta"), format = "fasta")
@@ -208,27 +207,26 @@ msaR(here("output", "alignement.fasta"), menu = FALSE, overviewbox = F)
 ```
 
 Maintenant que nous avons aligné nos séquences, nous pouvons passer à la suite !\
-Rappeler les différentes méthodes de construction d'arbres phylogénétiques que vous connaissez. (5 min)
+Rappeler les différentes méthodes de construction d'arbres phylogénétiques que vous connaissez. (5 minutes)
 
 # Méthode de distances
 
 Rappeler le principe des méthodes de distance et en citer deux exemples.\
-Quelles sont les différences entre ces méthodes ? (5 min)
+Quelles sont les différences entre ces méthodes ? (5 minutes)
 
 ## Génération de la matrice de distances
 
 Nous allons générer une matrice des distances à partir de nos alignements à l'aide la fonction `dist.dna()`. Ouvrir l'aide de cette fonction.\
 Combien de modèles de substitution sont disponibles ? Comparer à la fonction `dist.ml()`. Aller sur [ce lien](http://www.iqtree.org/doc/Substitution-Models) (et [celui-ci](https://en.wikipedia.org/wiki/Models_of_DNA_evolution) pour approfondir) et regarder les différents modèles.\
-Quelles sont les différences entre ces modèles ? Nous allons utiliser le modèle `TN93`, pourquoi ce nom ? Quelles sont ses particularités ? (5 min)\
-Utiliser la fonction `dist.dna()` pour générer une matrice de distance.
+Quelles sont les différences entre ces modèles ? Nous allons utiliser le modèle `TN93`, pourquoi ce nom ? Quelles sont ses particularités ?
+Utiliser la fonction `dist.dna()` pour générer une matrice de distance. (5 minutes)
 
 ```{r}
-# alignment_BIN <- adegenet::fasta2DNAbin(here("output", "alignment.fa"))
 alignment_BIN <- msaConvert(alignment, type = "ape::DNAbin") 
 distance_matrix <- dist.dna(alignment_BIN, model = "TN93")
 ```
 
-Nous allons visualiser la matrice de distance avec `ggplot2`, un des nombreux packages composant le [Tidyverse](https://www.tidyverse.org/). Décrire la structure de cette portion de code. (5 min)
+Nous allons visualiser la matrice de distance avec `ggplot2`, un des nombreux packages composant le [Tidyverse](https://www.tidyverse.org/). Décrire la structure de cette portion de code. (5 minutes)
 
 ```{r}
 distance_matrix |>
@@ -244,11 +242,11 @@ distance_matrix |>
   theme(axis.title = element_blank())
 ```
 
-Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous des tendances ? (5 min)
+Pourquoi les valeurs en diagonale de la matrice sont nulles ? Identifiez-vous des tendances ? (5 minutes)
 
 ## Génération et visualisation de l'arbre par UPGMA
 
-Générer et visualiser un arbre avec l'algorithme UPGMA à l'aide des fonction `upgma()` et `plot()`. Commenter cet arbre. (5 min)
+Générer et visualiser un arbre avec l'algorithme UPGMA à l'aide des fonction `upgma()` et `plot()`. Commenter cet arbre. (5 minutes)
 
 ```{r}
 UPGMA_tree <- upgma(distance_matrix)
@@ -269,7 +267,7 @@ Nous allons en profiter pour explorer la structure des arbres phylogénétiques 
 Pour commencer, explorer la structure de l'objet `NJ_tree` à l'aide de la fonction `class()` et de l'opérateur `$`\
 Lire la documentation de la fonction `read.tree`.\
 Enregistrer l'arbre dans un fichier `.txt` à l'aide de la fonction `ape::write.tree()`. Comment est structuré ce fichier texte ?\
-Utiliser les fonctions `plot()` et `nodelabel()` pour afficher l'arbre et les numéros des nœuds. (10 min)
+Utiliser les fonctions `plot()` et `nodelabel()` pour afficher l'arbre et les numéros des nœuds. (10 minutes)
 
 ```{r}
 class(NJ_tree)
@@ -280,11 +278,12 @@ nodelabels(frame = "none", cex = .6)
 ```
 
 Nous allons voir comment visualiser ce même arbre en utilisant le package ggtree.\
-Commenter le bloc de code suivant. Cette représentation vous semble-t-elle pertinente pour cette méthode ? (5 min)
+Commenter le bloc de code suivant. Cette représentation vous semble-t-elle pertinente pour cette méthode ? (5 minutes)
 
 ```{r}
 #| error: false
 #| warning: false
+
 ggtree(NJ_tree) + geom_tiplab() + geom_nodelab() + ggtitle("NJ non raciné")
 ```
 
@@ -293,6 +292,7 @@ Ajoutons des annotations à cet arbre :
 ```{r}
 #| error: false
 #| warning: false
+
 ggtree(NJ_tree, layout = "circular") %<+% annotations +
   geom_tiplab(aes(color = year)) +
   scale_color_viridis(option = "turbo") +
@@ -302,7 +302,7 @@ ggtree(NJ_tree, layout = "circular") %<+% annotations +
 
 A quoi correspondent les couleurs des feuilles de l'arbre ?\
 Nous allons raciner l'arbre de manière arbitraire. À partir de la figure précédente, quelle séquence vous semble pertinente pour raciner l'arbre ?\
-Raciner l'arbre à l'aide de la fonction `root()`. (5 min)\
+Raciner l'arbre à l'aide de la fonction `root()`. (5 minutes)\
 
 ```{r}
 NJ_tree_rooted <- NJ_tree |> root(outgroup = "CY012128") |> ladderize()
@@ -315,7 +315,7 @@ ggtree(NJ_tree_rooted) %<+% annotations +
   theme_tree2()
 ```
 
-Commenter cet arbre. (5 min)
+Commenter cet arbre. (5 minutes)
 
 ## Quelle méthode choisir ?
 
@@ -342,7 +342,7 @@ ggplot(data = data_NJ, mapping = aes(x = x, y = y)) +
 
 Lire l'aide de la fonction `cophenetic()`. Quelle valeur calcule-t-elle ? Quel type d'objet renvoie-t-elle ?\
 Que représente ce graphique ? Comment l'interpréter ?\
-Comment est calculé le coefficient de corrélation ? (10 min)\
+Comment est calculé le coefficient de corrélation ? (10 minutes)\
 \
 Recommençons avec l'arbre généré par UPGMA :
 
@@ -364,12 +364,12 @@ ggplot(
 cor(data_UPGMA$x, data_UPGMA$y)^2
 ```
 
-Qu'en concluez-vous sur cette méthode par rapport au Neighbour-Joining ? (5 min)
+Qu'en concluez-vous sur cette méthode par rapport au Neighbour-Joining ? (5 minutes)
 
 ## Bootstrap
 
 Rappeler le principe du Bootstrap.\
-À quoi sert-il dans ce contexte ? (5 min)
+À quoi sert-il dans ce contexte ? (5 minutes)
 
 ### Calcul des valeurs de Bootstrap
 
@@ -410,7 +410,7 @@ ggtree(NJ_tree_rooted) %<+% annotations +
   theme_tree2()
 ```
 
-Commenter cet arbre. Comment améliorer cet arbre en considérant les valeurs de bootstrap ? (5 min)
+Commenter cet arbre. Comment améliorer cet arbre en considérant les valeurs de bootstrap ? (5 minutes)
 
 ### On retire les noeuds faibles
 
@@ -444,20 +444,16 @@ ggtree(NJ_tree_rooted_collapsed) %<+% annotations +
   theme_tree2()
 ```
 
-Le comparer au précédent, comment a-t-il été modifié ? (5 min)
+Le comparer au précédent, comment a-t-il été modifié ? (5 minutes)
 
 # Maximum de parcimonie
 
 Rappeler le principe du maximum de parcimonie.\
-Lire l'aide de la fonction `optim.parsimony()`, à quoi correspondent les arguments `tree` et `data` ? Comment le relier au principe de la méthode ? Comment l'arbre optimal est-il obtenu ? (5 min)
+Lire l'aide de la fonction `optim.parsimony()`, à quoi correspondent les arguments `tree` et `data` ? Comment le relier au principe de la méthode ? Comment l'arbre optimal est-il obtenu ? (5 minutes)
 
 ## Conversion de l'alignement dans le format phyDat
 
 ```{r}
-# alignment_phyDat <- read.phyDat(
-#   file = here("output", "alignment.fa"),
-#   format = "fasta"
-# )
 alignment_phyDat <- alignment |> msaConvert(type = "phangorn::phyDat")
 class(alignment_phyDat)
 ```
@@ -472,7 +468,7 @@ MP_tree_init <- alignment_BIN |> dist.dna(model = "TN93") |> NJ()
 
 ## Génération de l'arbre le plus parcimonieux
 
-Utiliser la fonction `parcimony()` pour calculer le score de parcimonie de l'arbre initial.
+Utiliser la fonction `parsimony()` pour calculer le score de parcimonie de l'arbre initial.
 
 ```{r}
 parsimony(MP_tree_init, alignment_phyDat)
@@ -497,11 +493,11 @@ ggtree(MP_tree, layout = "circular") %<+% annotations +
 ```
 
 Commenter l'arbre généré.\
-Comment expliquer la similarité avec les arbres précédents ? (10 min)
+Comment expliquer la similarité avec les arbres précédents ? (10 minutes)
 
 # Maximum de vraisemblance
 
-Rappeler le principe du maximum de vraisemblance. (5 min)
+Rappeler le principe du maximum de vraisemblance. (5 minutes)
 
 ## Initialisation
 
@@ -526,7 +522,7 @@ alignment_phyDat |> as.character() |> table()
 ```
 
 Certains caractères de nos séquences ne correspondent pas aux bases azotées traditionnelles !\
-Lire [cette page](https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html) et identifier à quoi correspondent les lettres différentes de a, t, c et g. À quoi correspondent les `'-'` ? (5 min).\
+Lire [cette page](https://www.dnabaser.com/articles/IUPAC%20ambiguity%20codes.html) et identifier à quoi correspondent les lettres différentes de a, t, c et g. À quoi correspondent les `'-'` ? (5 minutes).\
 
 Enregistrons leur position dans un objet :
 
@@ -541,7 +537,7 @@ na.posi <- which(
 ```
 
 Voyons la distribution de ces lettres :\
-Commenter le bloc ce code ci-après. (5 min)
+Commenter le bloc ce code ci-après. (5 minutes)
 
 ```{r}
 apply(
@@ -570,7 +566,7 @@ Reconvertissons le jeu de donné trié au bon format :
 alignment_cropped_phyDat <- as.phyDat(alignment_cropped)
 ```
 
-Regénérer l'arbre d'initialisation avec notre jeu de donnée nettoyé. (5 min)
+Regénérer l'arbre d'initialisation avec notre jeu de donnée nettoyé. (5 minutes)
 
 ```{r}
 ML_tree_init <- alignment_cropped |> dist.dna(model = "TN93") |> NJ()
@@ -580,7 +576,7 @@ ML_tree_init_L
 
 ## Génération de l'arbre le plus vraisemblable
 
-Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2,optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à un modèle GTR + G(4) + I (Generalised time reversible + Gamma(4) + Invariants) très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
+Utiliser la fonction `optim.pml()` pour générer l'arbre optimal avec les paramètres `model = "GTR", inv = .2, optNni = TRUE, optBf = TRUE, optQ = TRUE, optGamma = TRUE`, ce qui correspond à utiliser un modèle GTR + $\Gamma$(4) + I (Generalised time reversible + $\Gamma$(4) + Invariants) très standard pour ce genre d'application. Il est également possible d'utiliser la fonction `modelTest()` pour choisir un modèle approprié automatiquement.
 
 ```{r}
 ML_tree <- optim.pml(
@@ -595,6 +591,8 @@ ML_tree <- optim.pml(
 ML_tree
 ```
 
+que dire dees pramètres optimaux obtenus ? (5 minutes)
+
 Comparons notre arbre optimal avec l'arbre initial généré par Neighbour-Joining :
 
 ```{r}
@@ -602,7 +600,9 @@ anova(ML_tree_init_L, ML_tree)
 AIC(ML_tree_init_L, ML_tree)
 ```
 
-Lire l'aide de la fonction `AIC`. À quoi sert l'indice d'Akaike ? (5 min) Affichons notre super arbre !
+Lire l'aide de la fonction `AIC`. À quoi sert le Critère d'Information d'Akaike ? Pourquoi utiliser l'ANOVA et l'AIC ? (5 minutes)
+
+Affichons notre super arbre !
 
 ```{r}
 ML_tree_rooted <- ML_tree$tree |> root(outgroup = "CY012128") |> ladderize()
@@ -620,3 +620,5 @@ ggtree(ML_tree_rooted) %<+% annotations +
   geom_rootedge(rootedge = .01) +
   theme_tree2()
 ```
+
+Observez-voius des différences aves les arbres précédents ? (5 minutes)
