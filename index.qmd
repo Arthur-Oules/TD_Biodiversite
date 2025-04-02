@@ -127,7 +127,7 @@ Quel est le protocole général pour construire un arbre phylogénétique à par
 # Acquisition des séquences
 
 Nous allons commencer par récupérer les séquences d’intérêts sur Genbank directement depuis `R`.\
-Qu'est-ce que GenBank ? (5 min)
+Qu'est-ce que [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) ? (5 min)
 
 ## Chargement des données
 
@@ -145,10 +145,11 @@ annotations <- read_csv(
 view(annotations)
 ```
 
-Aller sur [GenBank](https://www.ncbi.nlm.nih.gov/nucleotide/) et entrer un numéro d'accès dans la barre de recherche. À quoi correspond-t-elle ?\
+Aller sur [GenBank](https://www.ncbi.nlm.nih.gov/nucleotide/) et entrer un numéro d'accès dans la barre de recherche.
+À quoi correspond cette séquence ?\
 Pourquoi l'indication "Segment 4" ?\
 À quoi correspond la protéine codée par ce gène ? Quel est le rapport avec le nom du variant ?\
-Pouvez-vous faire des prédictions sur l'évolution de ces séquences ? (10 min)
+Pourqu'oi s'intéresser à cette séquence en particulier ? (10 min)
 
 ## Récupération des séquences par lot
 
@@ -162,6 +163,18 @@ annotations |>
   mutate("sequences" = Vectorize(Get_sequence)(accession)) |> 
   select(c(accession, sequences)) |> 
   write_to_fasta(path = here("output", "usflu_sequences.fasta"))
+```
+
+Ce bloc de code utilise la fonction `Get_sequence()` que j'ai codée et que nous avons chargée avec la fonction `source()` plus tôt. vous êtes peut-être curieux de savoir à quoi elle ressemble !\
+Rien de plus simple, comme pour l'aide vous pouvez utiliser la touche `F2` ou taper `View(Get_sequence)` dans la console R.
+
+Cette fonction se base sur la fonction `entrez_fetch()` du package `rentrez`. Que permet-elle de faire ? (5 minutes)
+
+Dans le bloc de code précédent, nous avons sauvegardé le résultat de l'opération dans le fichier `output/usflu_sequences.fasta`. Ouvrez le manuellement ou grace à la commande suivante :
+
+```{r}
+#| error: false
+#| warning: false
 
 shell(here("output", "usflu_sequences.fasta"))
 ```
@@ -172,7 +185,8 @@ Rappeler le principe de l'alignement de séquences. (5min)\
 
 Le package `msa` (Multiple Sequence Alignment) permet d'utiliser les algorithmes classiques d'alignement de multiples séquences directement depuis `R`.\
 Ouvrir la page d'aide de la fonction `msa()`.\
-Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 min)\
+Quels sont les algorithmes disponibles ? Sous quelle forme doit-on fournir les séquences à la fonction ? (5 min)
+
 Commencer par ouvrir le fichier fasta généré dans un format accepté par la fonction `msa()`.
 
 ```{r}
@@ -180,7 +194,7 @@ usflu_sequences <- readDNAStringSet(file = here("output", "usflu_sequences.fasta
 usflu_sequences
 ```
 
-On va utiliser l'algorithme MUSCLE pour générer notre alignement.\
+On va utiliser l'algorithme [MUSCLE](https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)) pour générer notre alignement. Pour les curieux, vous pouvez lire [ici](https://help.geneious.com/hc/en-us/articles/360044627712-Which-multiple-alignment-algorithm-should-I-use) une description des algorithmes plus connus et utilisés.\
 Utiliser la fonction `msa()` avec les bons paramètres pour générer un alignement. (5 min)
 
 ```{r}
@@ -214,7 +228,7 @@ alignment_BIN <- msaConvert(alignment, type = "ape::DNAbin")
 distance_matrix <- dist.dna(alignment_BIN, model = "TN93")
 ```
 
-Nous allons visualiser la matrice de distance avec ggplot. Décrire la structure de cette portion de code. (5 min)
+Nous allons visualiser la matrice de distance avec `ggplot2`, un des nombreux packages composant le [Tidyverse](https://www.tidyverse.org/). Décrire la structure de cette portion de code. (5 min)
 
 ```{r}
 distance_matrix |>
